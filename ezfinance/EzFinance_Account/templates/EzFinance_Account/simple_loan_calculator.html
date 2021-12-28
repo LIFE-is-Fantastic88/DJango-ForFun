@@ -1,0 +1,135 @@
+{% extends "EzFinance_Account/base.html"%}
+{% block content %}
+<style type="text/css">
+
+body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+
+
+
+</style>
+<div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h3>
+                    Simple Loan Calculator
+                </h3>
+            </div>
+        </div>
+    </div>
+    <hr>
+     {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label ">Loan Amount</label>
+                    <div class="col-sm-10">
+                        <input type="number" name="loan_amount" class="form-control " required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label ">Tenure (year/s)</label>
+                    <div class="col-sm-10">
+                        <input type="number" name="loan_period" class="form-control " required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label ">Interest rate as per Loan Provider</label>
+                    <div class="col-sm-10">
+                        <select name="loan_provider" required class="form-control ">
+                            <option value="Choose Loan Provider" selected>Choose Loan Provider</option>
+                            <option value="Alliance Bank@8.88%">Alliance Bank @ 8.88%</option>
+                            <option value="Kuwait Finance House@6.88%">Kuwait Finance House @ 6.88%</option>
+                            <option value="Hong Leong @ 9%">Hong Leong @ 9%</option>
+                            <option value="Standard Chartered @ 6.88%">Standard Chartered @ 6.88%</option>
+                            <option value="JCL @ 18%">JCL @ 18%</option>
+                            <option value="HSBC @ 6.88%">HSBC @ 6.88%</option>
+                            <option value="UOB @ 9.96%">UOB @ 9.96%</option>
+                            <option value="AmBank @ 9.99%">AmBank @ 9.99%</option>
+                            <option value="CIMB @ 6.88%">CIMB @ 6.88%</option>
+                            <option value="Maybank @ 6.5%">Maybank @ 6.5%</option>
+                            <option value="Bank Rakyat (Private Sector) @ 5.09%">Bank Rakyat (Private Sector) @ 5.09%
+                            </option>
+                            <option value="Bank Rakyat (Public Sector) @ 4.54%">Bank Rakyat (Private Sector) @ 4.54%
+                            </option>
+                            <option value="Bank Islam @ 4.99%">Bank Islam @ 4.99%</option>
+                            <option value="Al Rajhi @ 6.99%">Al Rajhi @ 6.99%</option>
+                            <option value="MBSB (Private Sector) @ 6.58%">MBSB (Private Sector) @ 6.58%</option>
+                            <option value="Citibank @ 5.88%">Citibank @ 5.88%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12"  align="right">
+                        <button name="loan_calculate" class="btn btn-primary" type="submit">
+                            Calculate
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <hr>
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h3>Your Monthly Payments</h3><br>
+            <span class="small text-gray">Trying to pay down a large credit card balance? Let us know how much you'd like to pay a month, or when you'd like to be debt-free and we'll help you come up.</span>
+            <hr>
+            <table class="col-md-12 ">
+                <tr>
+                    <td colspan="3"><strong>Your Inputs</strong></td>
+                </tr>
+                <tr>
+                    <td class="small text-gray" colspan="1">Credit Balance</td>
+                    <td class="small text-gray" colspan="1">Annual Interest Rate</td>
+                    <td class="small text-gray" colspan="1">Tenure (year/s)</td>
+                </tr>
+                <tr>
+                    <td style="color: orangered"><strong>$ {{ credit_balance|floatformat:2 }}</strong></td>
+                    <td><strong>{{ annual_interest_rate|floatformat:2 }} %</strong></td>
+                    <td><strong>{{ tenure }}</strong></td>
+                </tr>
+            </table>
+            <hr style="border: 1px dashed black;"/>
+            <table class="col-md-12 ">
+                <tr>
+                    <td colspan="4"><strong>Your Inputs</strong></td>
+                </tr>
+                <tr>
+                    <td class="small text-gray" colspan="1">Total Paid</td>
+                    <td colspan="1">RM {{ total_paid|floatformat:2 }}</td>
+                    <td colspan="1" rowspan="2"><font size="2">MONTHLY PAYMENT</font><br><font size="5"
+                                                                                               color="orangered">{{ monthly_paid|floatformat:2 }}/month</font>
+                    </td>
+                    <td colspan="1" rowspan="2"><font size="2">MONTHS TO PAYOFF</font><br><font size="5">{{ monthtopayoff }}
+                        months</font></td>
+                </tr>
+                <tr>
+                    <td class="small text-gray" colspan="1">Total Interest Paid</td>
+                    <td colspan="1">RM {{ total_interest_paid|floatformat:2 }}</td>
+
+                </tr>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+</div>
+{% endblock content %}

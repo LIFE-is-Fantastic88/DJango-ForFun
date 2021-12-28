@@ -1,0 +1,223 @@
+{% extends "EzFinance_Account/admin_base.html"%}
+{% block content %}
+<style>
+    #filter_form {
+        width: 50%;
+        margin-top: 10px;
+        margin-left : 74%
+    }
+.fabutton {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+ .blinking2{
+    animation:blinking2Text 1s infinite;
+}
+@keyframes blinking2Text{
+    0%{     color: orangered;    }
+    49%{    color: orangered; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: orangered;    }
+}
+ .blinking3{
+    animation:blinking3Text 1.3s infinite;
+}
+@keyframes blinking3Text{
+    0%{     color: red;    }
+    49%{    color: red; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: red;    }
+}
+ .blinking2{
+    animation:blinking2Text 1s infinite;
+}
+@keyframes blinking2Text{
+    0%{     color: orangered;    }
+    49%{    color: orangered; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: orangered;    }
+}
+.btn-hover:hover{
+   background-color:lavenderblush;
+}
+.btn-hover-reject:hover{
+   background-color:#efefef !important;
+}
+</style>
+<div class="container emp-profile">
+
+    <div class="col-md-14" >
+
+        <div class="row col-md-14" >
+            <div class="col-md-6"><h3>Job ID&nbsp;&nbsp;<font color="dodgerblue">#J{{ job_create_form.id|add:"+886457" }}</font></h3></div>
+            <div class="col-md-6" align="right"><h3><font color="red" class="blinking3">Rejected</font></h3></div>
+        </div>
+        <hr>
+        <div class="bg-white rounded-lg p-5 shadow">
+            <div class="row col-md-12" >
+                <div class="col-md-12"><h5>Admin Rejected Reason</h5></div>
+            </div>
+            <div class="row col-md-12" style="margin-top:1%" >
+
+                        <div class="col-md-12" data-toggle="tooltip"
+                             title="Admin should recheck the applicant submission based on past reject reason">
+                            <textarea  readonly style="height:100%; width:100%; border:1px solid lightgray; padding:1%; border-radius: 5px; color:hotpink; background-color:snow" rows="4">{{ job_create_form.job_admin_notice }}</textarea>
+                        </div>
+                    </div>
+        <hr>
+            <div class="row col-md-12" style="margin-top:2%">
+                <div class="col-md-3" style="padding-top:0.5%"><STRONG>Employer Name</STRONG></div>
+                <div class="col-md-5"><input class="form-control" value="{{ job_create_form.job_employer_name }}" readonly style="background-color:white; color:mediumblue;"></div>
+            </div>
+            <div class="row col-md-12" style="margin-top:2%">
+                <div class="col-md-3" style="padding-top:0.5%"><STRONG>Employer Company</STRONG></div>
+                <div class="col-md-6"><input class="form-control" value="{{ job_create_form.job_employer_company }}" readonly style="background-color:white; color:mediumblue;"></div>
+                <i style="padding-top:1%" class="fa fa-question-circle" data-toggle="tooltip"
+                   title="Company must registered under Suruhanjaya Syarikat Malaysia (SSM)"></i>
+            </div>
+            <div class="row col-md-12" style="margin-top:2%">
+                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Employer Email</STRONG></div>
+                <div class="col-md-5">
+                    <div class="input-group mb-3">
+                    <div class="input-group-prepend" >
+                        <a class="input-group-text" id="basic-addon2" href="mailto:{{ job_create_form.job_employer_email }}?subject=EzFinance Job Application - Job ID: #J{{ job_create_form.id|add:'+886457' }}"><span
+                        class="fa fa-envelope "></span></a>
+                    </div>
+                    <input class="form-control" aria-describedby="basic-addon2" value="{{ job_create_form.job_employer_email }}" readonly style="background-color:white; color:mediumblue;">
+                    </div>
+                </div>
+                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Employer Contact</STRONG></div>
+                <div class="col-md-3">
+                    <div class="input-group mb-3">
+                    <div class="input-group-prepend" >
+                        <a class="input-group-text" id="basic-addon1" href="tel:{{ job_create_form.job_employer_contact_number }}"><span
+                        class="fa fa-phone "></span></a>
+                    </div>
+                    <input class="form-control" value="{{ job_create_form.job_employer_contact_number }}"
+                           aria-describedby="basic-addon1" readonly style="background-color:white; color:mediumblue;">
+                </div>
+                </div>
+            </div>
+            <div class="row col-md-12" style="margin-top:0.4%; margin-bottom:2%;" >
+                <div class="col-md-3" style="padding-top:0.5%"><STRONG>Vacancy Period (in days)</STRONG></div>
+                <div class="col-md-2" data-toggle="tooltip" title="Maximum 365 days for each vacancy.">
+                    <input class="form-control" value="{{ job_create_form.job_available_day }}" readonly style="background-color:white; color:mediumblue;">
+                </div>
+                <i style="padding-top:1%" class="fa fa-question-circle" data-toggle="tooltip"
+                   title="Maximum 365 days for each vacancy."></i>
+                <div class="col-md-2" style="padding-top:0.5%; " align="center"><STRONG>Apply Date</STRONG></div>
+                <div class="col-md-4" >
+                    <input class="form-control" value="{{ job_create_form.job_created_date|date:'d M Y' }}" readonly style="background-color:white; color:mediumblue;">
+                </div>
+            </div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#description" role="tab"
+                       aria-controls="home" aria-selected="true">Job Description</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                     aria-labelledby="home-tab">
+                    <div class="row col-md-12" style="margin-top:2%">
+                        <div class="col-md-2" style="padding-top:0.5%"><STRONG>Job Position</STRONG></div>
+                        <div class="col-md-6"><input class="form-control" value="{{ job_create_form.job_position }}" readonly style="background-color:white; color:mediumblue;"></div>
+
+                    </div>
+                    <div class="row col-md-12" style="margin-top:2%">
+                        <div class="col-md-2"><STRONG>Job Type</STRONG></div>
+                        <div class="col-md-4 "><input class="form-control" value="{{ job_create_form.job_type }}" readonly style="background-color:white; color:mediumblue;"></div>
+                        <div class="col-md-2" style="padding-top:0.5%" align="center"><STRONG>Salary</STRONG></div>
+                        <div class="col-md-4" data-toggle="tooltip"
+                             title="No specific format as long as got mention job salary .">
+                            <input class="form-control" value="{{ job_create_form.job_salary }}" readonly style="background-color:white; color:mediumblue;">
+                        </div>
+                    </div>
+                    <div class="row col-md-12" style="margin-top:2%">
+                        <div class="col-md-2" style="padding-top:0.5%"><STRONG>Job Location</STRONG></div>
+                        <div class="col-md-10 " data-toggle="tooltip"
+                             title="Job location compulsory to include area or region">
+                            <input class="form-control" value="{{ job_create_form.job_location }}" readonly style="background-color:white; color:mediumblue;">
+                        </div>
+                    </div>
+                    <div class="row col-md-12" style="margin-top:2%">
+                        <div class="col-md-2"><STRONG>Job Description</STRONG></div>
+                        <div class="col-md-10" data-toggle="tooltip"
+                             title="Please roughly give some description about your job post">
+                        <textarea  readonly style="height:100%; width:100%; border:1px solid lightgray; padding:1%; border-radius: 5px; color:mediumblue;" rows="5">{{ job_create_form.job_general_description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="row col-md-12" style="margin-top:2%">
+                        <div class="col-md-2"><STRONG>Job Duties</STRONG></div>
+                        <div class="col-md-10" data-toggle="tooltip"
+                             title="Please roughly explain job responsibilities to candidates">
+                            <textarea readonly style="height:100%; width:100%; border:1px solid lightgray; padding:1%; border-radius: 5px; color:mediumblue;" rows="3">{{ job_create_form.job_duties }}</textarea>
+                        </div>
+                    </div>
+                    <div class="row col-md-12" style="margin-top:2%">
+                        <div class="col-md-2"><STRONG>Job Requirements</STRONG></div>
+                        <div class="col-md-10" data-toggle="tooltip"
+                             title="Please mention job requirement for your job">
+                            <textarea  readonly style="height:100%; width:100%; border:1px solid lightgray; padding:1%; border-radius: 5px; color:mediumblue;" rows="4">{{ job_create_form.job_requirement }}</textarea>
+                        </div>
+                    </div>
+
+                        {% if job_create_form.job_request_reject_status == False %}
+                     <div class="row col-md-12" style="margin-top:3%">
+                        <div class="col-md-6" > <button type="button" class="profile-edit-btn btn-hover-reject" data-toggle="modal" data-target="#exampleModal" style="background-color:lavenderblush" >Reject</button></div>
+                        <div class=" col-md-6" align="right">
+
+                            <form method="post">{% csrf_token %}<button type="submit" onclick="return confirm('Are you sure to approve job application. ( ID: #J{{ job_create_form.id|add:'+886457' }} )')" class="profile-edit-btn btn-hover" name="ApproveJobApplication">Approve</button></form>
+
+                        </div>
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document" style="max-width: 50%">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">EzFinance Reject Notice</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="message-text" class="col-form-label"><strong>EzFinance Notice [Job ID - #J{{ job_create_form.id|add:"+886457" }}]</strong></label>
+                                                <br>
+                                                <textarea rows="5" id="message-text" style="height:100%; width:100%;  padding:0.5%;" name="admin_comment"></textarea>
+                                            </div>
+
+                                        <div class="row" style="margin-top:0.5%;">
+                                            <div class="col-md-12"><span class="small text-gray "
+                                                                         style="color:mediumblue;"><strong>NOTE:</strong> Admin should mention the reject reason specifically in order to let applicant make correction.</span>
+                                            </div>
+                                        </div>
+                                            <div class="row" style="margin-top:2%;">
+                                                <div class="col-md-12" align="right">
+                                                     <button type="submit" class="btn btn-primary" name="admin_reject_btn"><span class="fa fa-paper-plane "></span>&nbsp;&nbsp;Job Application Reject </button>
+                                                </div>
+                                                </div>
+                                            </form>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

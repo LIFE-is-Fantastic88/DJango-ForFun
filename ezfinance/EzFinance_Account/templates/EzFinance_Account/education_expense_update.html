@@ -1,0 +1,91 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+.container {
+    position: static;
+     margin-top: 50px;
+    }
+#first_row,#second_row,#third_row,#forth_row,#transfer_button {
+    margin-top: 20px;
+    }
+body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+
+</style>
+<div class="container emp-profile">
+    <div class="col-md-6">
+            <div class="profile-head">
+                <h3>
+                    Education Expenses
+                </h3>
+                <p class="proile-rating">{{ expenses_list.startdate }}&nbsp-&nbsp{{ expenses_list.enddate }}</p>
+            </div>
+        </div>
+    <hr>
+      {% if messages %}
+                                    {% for message in messages %}
+                                    <div class="alert alert-danger ">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+     <div class="col-md-14 " style="margin-top:15px">
+        <div class="bg-white rounded-lg p-5 shadow">
+             <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.education_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.education_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.education_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="padding-top:13px">
+                            <div class="progress " style="vertical-align:baseline;">
+                                <div class="progress-bar bg-info" role="progressbar" style=" width: {{education_used|floatformat:2}}%;"
+                                     aria-valuenow="{{education_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{education_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+     </div>
+    <div class="col-md-14 " style="margin-top:15px">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <form method="post">
+        {% csrf_token %}
+        {{EducationExpensesRecord_form|crispy}}
+        <button type="submit" name="dl_expenses_submit" class="btn btn-secondary" style="margin-left: 92.5% ">Submit</button>
+    </form>
+        </div>
+    </div>
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h4>What is Education Expenses</h4>
+            <hr>
+            <div class="h6">Type 1: Qualified education expenses</div>
+            <ul>
+                <li>Tuition and fees required for enrollment at an eligible educational institution</li>
+                <li>Books, supplies and equipment required for enrollment</li>
+                <li>Expenses for special-needs services in connection with enrollment or attendance</li>
+                <li>Room and board incurred by eligible students</li>
+                <li>Computers and peripheral equipment, educational software and internet access</li>
+            </ul><br>
+            <p class="small text-gray" align="center">*** These expenses don’t qualify for elementary and secondary school education expenses. ***</p>
+
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}

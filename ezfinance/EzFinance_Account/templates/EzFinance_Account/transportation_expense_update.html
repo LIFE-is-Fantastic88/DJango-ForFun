@@ -1,0 +1,103 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+.container {
+    position: static;
+     margin-top: 50px;
+    }
+#first_row,#second_row,#third_row,#forth_row,#transfer_button {
+    margin-top: 20px;
+    }
+body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+
+</style>
+<div class="container emp-profile">
+    <div class="col-md-6">
+            <div class="profile-head">
+                <h3>
+                    Transportation Expenses
+                </h3>
+                <p class="proile-rating">{{ expenses_list.startdate }}&nbsp-&nbsp{{ expenses_list.enddate }}</p>
+            </div>
+        </div>
+    <hr>
+      {% if messages %}
+                                    {% for message in messages %}
+                                    <div class="alert alert-danger ">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+     <div class="col-md-14 " style="margin-top:15px">
+        <div class="bg-white rounded-lg p-5 shadow">
+             <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.transportation_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.transportation_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.transportation_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="padding-top:13px">
+                            <div class="progress " style="vertical-align:baseline;">
+                                <div class="progress-bar bg-info" role="progressbar" style=" width: {{transportation_used|floatformat:2}}%;"
+                                     aria-valuenow="{{transportation_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{transportation_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+     </div>
+    <div class="col-md-14 " style="margin-top:15px">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <form method="post">
+        {% csrf_token %}
+        {{TransportationExpensesRecord_form|crispy}}
+        <button type="submit" name="dl_expenses_submit" class="btn btn-secondary" style="margin-left: 92.5% ">Submit</button>
+    </form>
+        </div>
+    </div>
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h4>What is Transportation Expenses</h4>
+            <hr>
+            <div class="h6">Type 1: QualifiedTransportation expenses</div>
+            <ul>
+                <li>Car payment</li>
+                <li>Car insurance</li>
+                <li>Petrol</li>
+                <li>Public transportation tickets</li>
+                <li>Taxi costs</li>
+                <li>Parking fees</li>
+
+            </ul><br>
+             <h4>5 Ways to Reduce Transportation Expenses</h4>
+            <hr>
+            <ul>
+                <li>Shop around for a better car insurance rate</li>
+                <li>Consider selling your car if you live in a city with great public transportation</li>
+                <li>Buy a used car instead of a new one</li>
+                <li>Use a gas rewards card</li>
+                <li>Try carpooling</li>
+
+            </ul>
+
+
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}

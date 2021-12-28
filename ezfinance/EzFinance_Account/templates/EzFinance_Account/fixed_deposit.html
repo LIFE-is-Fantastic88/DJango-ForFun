@@ -1,0 +1,89 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+.container {
+    position: static;
+     margin-top: 50px;
+    }
+#first_row,#second_row,#third_row,#forth_row,#transfer_button {
+    margin-top: 20px;
+    }
+
+
+</style>
+<div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h3>
+                    Fixed Deposit Account
+                </h3>
+                <p class="proile-rating">Your current account balance is &nbsp; <span><font
+                        size="5px">RM {{ user.account.account_balance|floatformat:2 }}</font></span></p>
+            </div>
+        </div>
+    </div>
+    <hr>
+ {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+    <form method="post">
+{% csrf_token %}
+
+
+        <div class="row form-group" id="second_row">
+            <div class="col-md-4">
+                <label data-toggle="tooltip" title="Create new fixed deposit account number">Account Type&nbsp;<i
+                        class="fa fa-question-circle"></i></label>
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" value="FIXED DEPOSIT ACCOUNT" readonly
+                       style="width:50%">
+            </div>
+        </div>
+        <div class="row form-group" id="third_row">
+            <div class="col-md-4">
+                <label>From</label>
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="transfer_from" readonly style="width:50%"
+                       value="BASIC EZFINANCE ACCOUNT 702 4331569 ">
+            </div>
+        </div>
+        <div class="row form-group" id="first_row">
+            <div class="col-md-4 ">
+                <label data-toggle="tooltip" title="Rates depend on Tenure Period">Tenure & Rate&nbsp;<i
+                        class="fa fa-question-circle"></i></label>
+            </div>
+            <div class="col-md-5">
+                 {{ fixed_deposit_form.tenure_rate|as_crispy_field }}
+            </div>
+
+        </div>
+
+
+        <div class="row form-group " id="forth_row">
+            <div class="col-md-4">
+                <label>Amount (in RM)</label>
+            </div>
+            <div class="col-md-5 ">
+                {{ fixed_deposit_form.fixedDeposit_amount|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3" id="transfer_button">
+                <button class="subscribe btn btn-primary btn-block" name="deposit_submit" type="submit">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

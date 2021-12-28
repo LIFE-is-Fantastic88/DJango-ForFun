@@ -1,0 +1,202 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+.container {
+    position: static;
+     margin-top: 50px;
+    }
+body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+.btn-hover:hover{
+ background-color: darkgray !important;
+ color:white !important;
+}
+.blinking2{
+    animation:blinking2Text 1.3s infinite;
+}
+@keyframes blinking2Text{
+    0%{     color: orangered;    }
+    49%{    color: orangered; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: orangered;    }
+}
+
+</style>
+<div class="container emp-profile">
+    <div class="row" style="padding-left:1%; padding-right:1%" >
+        <div class="col-md-6"></div>
+        <div class="col-md-6" align="right">
+            <button type="button" class="btn btn-secondary btn-hover" data-toggle="modal" data-target="#exampleModal" style="border-radius:25px; background-color:linen; color:darkgray;
+            border:none;padding-left:9%;padding-right:9%;padding-top:2%;padding-bottom:2%;font-size: 20px;"><strong>Apply for Job</strong>&nbsp;&nbsp;&nbsp;<span class="fa fa-paper-plane " ></span></button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="max-width:50%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Job Vacancy for
+                        {{job_vacancy_list_detail_selected.job_position}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class=" col-md-12">
+
+                            <div class="row" style="margin-top:2%">
+                                <div class="col-md-3" style="padding-top:1%">
+                                    <strong>Applicant Name</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    {{ vacancyForm.job_applicant_name|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:1%">
+                                    <strong>Contact no.</strong>
+                                </div>
+                                <div class="col-md-6">
+
+                                    {{ vacancyForm.job_applicant_contact_number|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:1%">
+                                    <strong>Email Address</strong>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ vacancyForm.job_applicant_email|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong>Make your Pitch ! </strong><font class="blinking2">(Recommended)</font>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:2%">
+                                    <strong>{{ vacancyForm.job_pitch }}</strong>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:1%">
+                                <div class="col-md-4" style="padding-top:1%">
+                                    <strong>Upload Your Resume</strong>
+                                </div>
+                                <div class="col-md-8" style="padding-top:1%">
+                                    {{ vacancyForm.applicant_resume }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top:2%;">
+                                    <span class="small text-gray "
+                                          style="color:mediumblue;"><strong>SECURITY NOTE:</strong> Your submission will only view by employer from {{ job_vacancy_list_detail_selected.job_employer_company }}.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="vacancy_pk" value="{{job_vacancy_list_detail_selected.pk}}">
+
+
+                        <div class="row">
+                            <div class="col-md-12" style="margin-top:2%" align="right">
+                                <button type="submit" name="vacancy_submit_btn" class="btn btn-primary"
+                                        style="border-radius:25px; padding:1%; padding-left:2%; padding-right:2%;"><span
+                                        class="fa fa-paper-plane mr-3 "></span>Submit Application
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="col-md-14" style="padding:1%" >
+        {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+        <div class="bg-white rounded-lg p-4 shadow" >
+            <div class="col-md-12" style="padding:0%;">
+            <div class="row">
+                <div class="col-md-8">
+                <font style="font-size:35px" color="mediumblue"><strong>{{job_vacancy_list_detail_selected.job_position}}</strong></font><br>{{job_vacancy_list_detail_selected.job_employer_company}}
+                </div>
+                <div  class="col-md-4"  align="right" style="padding-top:1.5%;"><span class="fa fa-clock-o mr-3 " style="color:silver"></span><font size="3%">Post on {{ job_vacancy_list_detail_selected.job_posted_date|date:'d M Y' }}</font></div>
+
+
+            </div>
+                <hr>
+                <div class="row " style="margin-top:2%">
+                    <div class="col-md-12">
+                        <label style="border: 0.5px solid 	darkgray ;border-radius: 25px; width:auto; padding-left:2%; padding-right:2%; padding-top:0.1%;padding-bottom:0.2%;"><span
+                                class="fa fa-map-marker mr-3 " style="color:steelblue"></span><font color="steelblue"
+                                                                                                    style="font-weight: lighter;">{{ job_vacancy_list_detail_selected.job_location }}</font></label>
+                        <label style="border: 0.5px solid coral ;border-radius: 25px; width:auto; padding-left:2%; padding-right:2%; padding-top:0.1%;padding-bottom:0.2%;"><span
+                                class="fa fa-clock-o mr-3 " style="color:orangered"></span><font color="orangered"
+                                                                                                    style="font-weight: lighter;">Expired on {{ job_vacancy_list_detail_selected.job_expiry_date|date:'d M Y' }}</font></label>
+                    </div>
+                </div>
+                <div class="row " style="margin-top:0%">
+                                    <div class="col-md-12">
+                                     <label  style="border: 0.5px solid darkgray ;border-radius: 25px; width:auto; padding-left:2%; padding-right:2%; padding-top:0.1%;padding-bottom:0.2%;"><span class="fa fa-usd mr-3 " style="color:steelblue"></span><font color="steelblue" style="font-weight: lighter;">{{ job_vacancy_list_detail_selected.job_salary }}</font></label>
+                                     &nbsp;<label  style="border: 0.5px solid darkgray ;border-radius: 25px; width:auto; padding-left:2%; padding-right:2%; padding-top:0.1%;padding-bottom:0.2%;"><span class="fa fa-tags mr-3 " style="color:steelblue"></span><font color="steelblue" style="font-weight: lighter;">{{ job_vacancy_list_detail_selected.job_type }}</font></label>
+                                    </div>
+                    </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow " style="margin-top:1%">
+            <div class="col-md-12" style="padding:0%;">
+                <h4 style="color:lightsteelblue"><span  class="fa fa-pencil-square-o mr-3 "></span>JOB DESCRIPTION</h4>
+                <div class="row col-md-12" >
+                    <p style="color:darkblue">{{job_vacancy_list_detail_selected.job_general_description}}</p>
+                </div>
+            </div>
+        </div>
+
+            <div class="bg-white rounded-lg p-4 shadow " style="margin-top:1%; ">
+                <div class="col-md-12 row">
+                    <div class="col-md-6" style="padding:0%;">
+                        <h4 style="color:lightsteelblue"><span class="fa fa-tags mr-3 "></span>REQUIREMENT</h4>
+                        <div class="row col-md-12">
+                            <p style="color:darkblue">{{job_vacancy_list_detail_selected.job_requirement}}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="padding-left:5%;">
+                        <h4 style="color:lightsteelblue"><span class="fa fa-briefcase mr-3 "></span>JOB DUTIES</h4>
+                        <div class="row col-md-12">
+                            <p style="color:darkblue">{{job_vacancy_list_detail_selected.job_duties}}</p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow " style="margin-top:1%">
+            <div class="col-md-12" style="padding:0%;">
+                <h4 style="color:lightsteelblue"><span  class="fa fa-user-plus mr-3 "></span>Contact Us</h4>
+                <div class="row" style="margin-top:1.5%" >
+                    <div class="col-md-4"><a href="mailto:{{ job_vacancy_list_detail_selected.job_employer_email }}"><span  class="fa fa-envelope mr-3 " style="color:dodgerblue"></span></a>&nbsp;<font color="darkblue">{{ job_vacancy_list_detail_selected.job_employer_email }}</font></div>
+                    <div class="col-md-3"><a href="tel:{{ job_vacancy_list_detail_selected.job_employer_contact_number }}"><span  class="fa fa-phone mr-3 " style="color:dodgerblue"></span></a>&nbsp;<font color="darkblue">{{ job_vacancy_list_detail_selected.job_employer_contact_number }}</font></div>
+                    <div class="col-md-5"><span  class="fa fa-user mr-3 " style="color:	dodgerblue"></span><font color="darkblue">{{ job_vacancy_list_detail_selected.job_employer_name }}</font></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

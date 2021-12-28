@@ -1,0 +1,129 @@
+{% extends "EzFinance_Account/base.html"%}
+{% block content %}
+{% load staticfiles %}
+<style>
+
+body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+
+
+
+</style>
+
+<div class="container emp-profile">
+
+    <div class="col-lg-12 mx-auto mb-5 text-white text-center">
+        <h1> Welcome to Expenses Manager </h1>
+    </div>
+ {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+    <table class="table">
+        <thead class="thead-dark" align="center">
+        <tr>
+            <th scope="col">Plan ID</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Plan Budget</th>
+            <th scope="col">Total Spent</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody align="center">
+
+        {% if ExpensesManagerList %}
+        {% for Managerlist in ExpensesManagerList %}
+        <tr>
+            <th scope="row">#{{ Managerlist.id|add:"+551284632" }}</th>
+            <td>{{ Managerlist.startdate }}</td>
+            <td>{{ Managerlist.enddate }}</td>
+            <td>{{ Managerlist.budget_plan }}</td>
+            <td>{{ Managerlist.total_expenditure }}</td>
+            <td>
+               <a href="{% url 'expenses_manager' Managerlist.pk  %}" class="btn btn-secondary">Details</a>
+            </td>
+            <td>
+               <form action="{% url 'expenses_delete' Managerlist.pk %}" method="post">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-secondary confirm-delete" onclick="return confirm('Are you sure you want to delete this plan')" value="Delete">
+
+</form>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="7" align="center">
+                No Record Show
+            </td>
+        </tr>
+        {% endif %}
+
+
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="7" align="center">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="budgetcreate" class="btn btn-secondary btn-lg btn-block">Create New
+                        Budget Plan
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h4>Make Your Personel Budget Plan in 7 Steps</h4>
+            <hr>
+            <div class="h6">Step 1: Set Realistic Goals</div>
+            <p class="small text-gray">Goals for your money will help you make smart spending choices. Ask yourself:
+                What do I want my finances to look like in one year? Decide what’s important to you and start there.</p>
+            <div class="h6">Step 2: Identify your Income and Expenses</div>
+            <p class="small text-gray">You probably know how much you earn each month – but do you also know where it
+                all goes? Find out by tracking what you’re spending. Spend as you normally would, but for a few weeks,
+                jot down every cent you spend. It’s easy and you might be amazed by what you find out.</p>
+            <div class="h6">Step 3: Separate Needs and Wants</div>
+            <p class="small text-gray">Ask yourself: Do I want this or do I need it? Will spending this money get me
+                closer to my financial goals or further away? Can I live without it? Set clear priorities for yourself
+                and the decisions become easier to make.</p>
+            <div class="h6">Step 4: Design Your Budget</div>
+            <p class="small text-gray">Make sure that you are not spending more than you make. Balance your budget to
+                accommodate everything you need to pay for. One easy way to do this is with our free, easy-to-use
+                EzFinance Expenses Manager.</p>
+            <div class="h6">Step 5: Put Your Plan into Action</div>
+            <p class="small text-gray">Match your spending to when you receive your income. Decide ahead of time what
+                you’ll use each pay cheque for. Ask yourself: Have I allocated money for my necessities (housing, food,
+                utilities, transportation, etc.)? Have I put money aside for my debt payments, unexpected expenses,
+                savings and the fun stuff? This will protect you from going into debt further because you won’t rely on
+                credit to pay for your living expenses.</p>
+            <div class="h6">Step 6: Seasonal Expenses</div>
+            <p class="small text-gray">You know that things will “just come up” – school expenses, new shoes or an
+                annual membership. Set money aside to pay for these expenses so you can afford them without going into
+                debt.</p>
+            <div class="h6">Step 7: Look Ahead</div>
+            <p class="small text-gray">Getting on track with a budget can take a month or two. You’ve lived all this
+                time without a spending plan, so give yourself time to adjust. Don’t be afraid to ask for help if things
+                aren’t falling into place – help is just a phone call away.</p>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock content %}

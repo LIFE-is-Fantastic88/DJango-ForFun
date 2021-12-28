@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    {% load crispy_forms_tags %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'EzFinance_Account/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <title>EzFinance-Register</title>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'landing_page' %}">EzFinance</a>
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'about_us' %}">About Us<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'contact_us' %}">Support<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+<div class="register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+            <h3>Welcome</h3>
+            <p>You are 30 seconds away from manage your own saving!<br><br>
+                "The result of planning this way is to make the rounds of the stores that offer the best sales by going
+                a route that does not require doubling back or criss-crossing the city. This route planning not only
+                saves time, it saves gas." Byron Pulsifer</p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="submit" name="contactus" value="Contact Us"/><br/>
+            </form>
+
+        </div>
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                       aria-controls="home" aria-selected="true">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                       aria-controls="profile" aria-selected="false">Register</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <br>
+                    <h2 class="register-heading">EzFinance Account Login</h2>
+                    <div class="row register-form">
+                        <div class="col-md-7 " style="margin-right: 20%;margin-left: 21%;">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <fieldset class="form-group ">
+                                    <hr id="colorgraph">
+
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} ">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+
+                                    {% if next %}
+                                    <input type="hidden" name="next" value="{{ next }}"/>
+                                    {% endif %}
+                                    <div class="form-group ">
+                                        <label class="control-label" for="username">Username</label>
+                                        <input type="text" class="form-control " aria-describedby="userHelp"
+                                               id="username" name="username" placeholder="Enter Username">
+                                        <small id="userHelp" class="form-text text-muted">We'll never share your
+                                            username with anyone else.</small>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label class="control-label" for="password">Password</label>
+                                        <input type="password" class="form-control" name="password" id="password"
+                                               placeholder="Password">
+                                    </div>
+                                    <span class="button-checkbox">
+
+					<a href="{% url 'password_reset' %}" class="btn btn-link pull-right">Forgot Password?</a>
+				</span>
+                                </fieldset>
+
+                                <div class="g-recaptcha" data-sitekey="6LeCW9oUAAAAAHjjZ_bP6QxRnSZ61jfpQuO6UtEI
+"></div>
+                                <div class="form-group">
+                                    <input type="submit" name="login_btn" class="btnRegister" value="Login"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <h3 class="register-heading">Register a new EzFinance Account</h3>
+                    <br>
+                    <div class="row register-form">
+                        <div class="col-md-10" style="margin-left: 10%">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <fieldset class="form-group">
+                                    <hr id="colorgraphs">
+                                    {{ form|crispy }}
+                                </fieldset>
+                                <div class="form-group">
+                                    <input type="submit" name="reg_btn" class="btnRegister" value="Register"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{% static 'EzFinance_Account/js/jquery.min.js' %}"></script>
+<script src="{% static 'users/javascript/design.js' %}"></script>
+<script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

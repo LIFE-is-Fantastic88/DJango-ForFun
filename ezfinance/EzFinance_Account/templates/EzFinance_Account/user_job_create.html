@@ -1,0 +1,491 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+    .container {
+    position: static;
+     margin-top: 50px;
+    }
+#first_row,#second_row {
+    margin-top: 20px;
+    }
+ .blinking2{
+    animation:blinking2Text 1.3s infinite;
+}
+@keyframes blinking2Text{
+    0%{     color: orangered;    }
+    49%{    color: orangered; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: orangered;    }
+}
+.blinking3{
+    animation:blinking3Text 1.3s infinite;
+}
+@keyframes blinking3Text{
+    0%{     color: red;    }
+    49%{    color: red; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: red;    }
+}
+.p-5 {
+  padding-bottom: 3% !important;
+}
+.btn-hover:hover{
+ background-color: lavenderblush;
+}
+.modal-lg {
+    max-width: 80% !important;
+
+}
+.modal-md {
+    max-width: 50% !important;
+
+}
+.fa-exclamation-circle {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 18px;
+    font-weight: 700;
+    color: red;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: left;
+
+    border-radius: 10px;
+    position: absolute;
+    margin-top: -5px;
+    margin-left: -33px
+}
+
+</style>
+<div class="container emp-profile">
+
+        <div class="row">
+<div class="col-md-12">
+                <div class="profile-head">
+
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                               aria-controls="home" aria-selected="true"><span class="fa fa-list mr-3"></span>&nbsp;Job Post List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                               aria-controls="profile" aria-selected="false"><span class="fa fa-pencil-square-o mr-3"></span>&nbsp;Post New Job</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} ">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row col-md-12">
+                                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Employer Name</STRONG></div>
+                                <div class="col-md-5">{{ job_create_form.job_employer_name|as_crispy_field }}</div>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Employer Company</STRONG></div>
+                                <div class="col-md-6">{{ job_create_form.job_employer_company|as_crispy_field }}</div>
+                                <i style="padding-top:1%" class="fa fa-question-circle" data-toggle="tooltip" title="Company must registered under Suruhanjaya Syarikat Malaysia (SSM)"></i>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Employer Email</STRONG></div>
+                                <div class="col-md-4">{{ job_create_form.job_employer_email|as_crispy_field }}</div>
+                                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Employer Contact</STRONG></div>
+                                <div class="col-md-4">{{ job_create_form.job_employer_contact_number|as_crispy_field }}</div>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="col-md-3" style="padding-top:0.5%"><STRONG>Vacancy Period (in days)</STRONG></div>
+                                <div class="col-md-3" data-toggle="tooltip" title="Maximum 365 days for each vacancy.">{{ job_create_form.job_available_day|as_crispy_field }}</div>
+                                 <i style="padding-top:1%" class="fa fa-question-circle" data-toggle="tooltip" title="Maximum 365 days for each vacancy."></i>
+                            </div>
+                            <ul class="nav nav-tabs"  role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active"  data-toggle="tab" href="#description" role="tab"
+                                       aria-controls="home" aria-selected="true">Job Description</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" >
+                                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                     aria-labelledby="home-tab">
+                                    <div class="row col-md-12" style="margin-top:2%">
+                                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Job Position</STRONG></div>
+                                <div class="col-md-4">{{ job_create_form.job_position|as_crispy_field }}</div>
+                                <div class="col-md-2" style="padding-top:0.5%" align="center"><STRONG>Salary</STRONG></div>
+                                <div class="col-md-4" data-toggle="tooltip" title="No specific format as long as got mention job salary .">{{ job_create_form.job_salary|as_crispy_field }}</div>
+                            </div>
+                                    <div class="row col-md-12">
+                                <div class="col-md-2" ><STRONG>Job Type</STRONG></div>
+                                        <div class="col-md-10 ">{{ job_create_form.job_type|as_crispy_field }}</div>
+                            </div>
+                                    <div class="row col-md-12">
+                                <div class="col-md-2" style="padding-top:0.5%"><STRONG>Job Location</STRONG></div>
+                                        <div class="col-md-10 "  data-toggle="tooltip" title="Job location compulsory to include area or region">{{ job_create_form.job_location|as_crispy_field }}</div>
+                            </div>
+                                    <div class="row col-md-12">
+                                <div class="col-md-2" ><STRONG>Job Description</STRONG></div>
+                                        <div class="col-md-10" data-toggle="tooltip" title="Please roughly give some description about your job post">{{ job_create_form.job_general_description }}</div>
+                            </div>
+                                    <div class="row col-md-12" style="margin-top:1%">
+                                <div class="col-md-2" ><STRONG>Job Duties</STRONG></div>
+                                        <div class="col-md-10" data-toggle="tooltip" title="Please roughly explain job responsibilities to candidates">{{ job_create_form.job_duties }}</div>
+                            </div>
+                                    <div class="row col-md-12" style="margin-top:1%">
+                                <div class="col-md-2" ><STRONG>Job Requirements</STRONG></div>
+                                        <div class="col-md-10" data-toggle="tooltip" title="Please mention job requirement for your job">{{ job_create_form.job_requirement }}</div>
+                            </div>
+                                     <div class="row col-md-12" style="margin-top:1%">
+                                         <div class="col-md-6" ></div>
+                                           <div class="col-md-6" align="right" ><button type="submit" class="profile-edit-btn" name="job_create_btn">Submit</button></div>
+
+                            </div>
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="col-md-12" >
+                            {% if job_request_list %}
+                            {% for job_request_lists in users %}
+                            {% if forloop.counter0 == 0 %}
+
+                            <div class="bg-white rounded-lg shadow col-md-12">
+                                <div class="p-5">
+
+                            <div class="row ">
+                                <div class="col-md-6"><strong>{{ job_request_lists.job_position }}</strong><br><span class="small text-gray">{{ job_request_lists.job_employer_company }}</span></div>
+                                <div class="col-md-3"><strong>Job ID</strong>&nbsp;&nbsp;&nbsp;<font color="dodgerblue">#J{{ job_request_lists.id|add:"+886457" }}</font></div>
+                                <div class="col-md-3" align="right"><strong>Status</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                 {% if job_request_lists.job_expiry_date %}
+                                    {% if job_request_lists.job_expiry_date < today %}
+                                    <font color="red">Expired</font>
+                                    {% else %}
+                                    {% if job_request_lists.job_request_approval_status == True and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False %}
+                                    <font color="#00ff00">Accepted</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False or job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="orangered" class="blinking2">Pending</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == True and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="red">Rejected</font>
+                                {% endif %}
+                                    {% endif %}
+                                    {% else %}
+                                    {% if job_request_lists.job_request_approval_status == True and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False %}
+                                    <font color="#00ff00">Accepted</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False or job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="orangered" class="blinking2">Pending</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == True and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="red">Rejected</font>
+                                {% endif %}
+                                   {% endif %}
+                                </div>
+                            </div>
+                                <div class="row" style="margin-top:1.5%; ">
+                                    <div class="col-md-4"><strong>Apply Date</strong><br><span class="small text-gray">{{ job_request_lists.job_created_date|date:'d M Y' }}</span></div>
+                                    <div class="col-md-4"><strong>Post Date</strong><br>
+                                        {% if job_request_lists.job_posted_date %}
+                                        <span class="small text-gray" style="color:royalblue;">{{ job_request_lists.job_posted_date|date:'d M Y' }}</span>
+                                        {% else %}
+                                        <span class="small text-gray" style="color:red;">unassigned</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-4"><strong>Expiry Date</strong><br>
+                                    {% if job_request_lists.job_expiry_date %}
+                                        {% if job_request_lists.job_expiry_date < today %}
+                                        <span class="small text-gray" style="color:red;">expired</span>
+                                        {% else %}
+                                        <span class="small text-gray" style="color:royalblue;">{{ job_request_lists.job_expiry_date|date:'d M Y' }}</span>
+                                        {% endif %}
+                                        {% else %}
+                                        <span class="small text-gray" style="color:red;">unassigned</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row " style="margin-top:1%">
+                                    <div class="col-md-3"><span class="fa fa-dollar mr-3" style="color:	crimson;"></span><font color="crimson">{{ job_request_lists.job_salary }}</font></div>
+                                    <div class="col-md-2"><span class="fa fa-briefcase mr-3"></span><font>{{ job_request_lists.job_type }}</font></div>
+                                     <div class="col-md-7"><span class="fa fa-envelope mr-3"></span><font>{{ job_request_lists.job_employer_email }}</font></div>
+
+                                </div>
+                                <div class="row " style="margin-top:1.5%">
+                                     <div class="col-md-12"><span class="fa fa-map-marker mr-3"></span><font>{{ job_request_lists.job_location }}</font></div>
+                                </div>
+                                    </div>
+                                 <div class="row" style="padding:0;">
+                                     {% if job_request_lists.job_request_reedit_status == True and job_request_lists.job_request_reject_status == True and job_request_lists.job_request_approval_status == False %}
+                                     <div class="col-md-4 btn-hover" style="border-top: medium solid whitesmoke;"><button data-toggle="modal" data-target="#adminNoticeModal{{ job_request_lists.id}}"  style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none;">
+                                         <span class="fa fa-envelope mr-3 fa-lg " ></span>
+                                         <span class="fa fa-exclamation-circle mr-3 fa-lg blinking3 "  style="color:red"></span>
+                                         <font size="3.5%">Message</font></button></div>
+                                     {% else %}
+                                     <div class="col-md-4 btn-hover" style="border-top: medium solid whitesmoke;"><button  onclick="return confirm('Currently no notice for your job application')" style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none;"><span class="fa fa-envelope mr-3 fa-lg"></span><font size="3.5%">Message</font></button></div>
+                                     {% endif %}
+                                      <div class="col-md-4 btn-hover" style="border-left: medium solid whitesmoke;border-right: medium solid whitesmoke;border-top: medium solid whitesmoke;"><a href="{% url 'job_vacancy_applied_list' job_request_lists.pk  %}" style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none;color:black; text-align: center;"><span class="fa fa-user-plus mr-3 fa-lg"></span><font size="3.5%">Applicant</font></a></div>
+                                      <div class="col-md-4 btn-hover" style="border-top: medium solid whitesmoke;"><button style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none;" data-toggle="modal" data-target="#exampleModalCenter{{ job_request_lists.id}}"><span class="fa fa-info-circle mr-3 fa-lg"></span><font size="3.5%">Detail</font></button></div>
+                                 </div>
+
+                            </div>
+
+
+
+
+                             {% else %}
+                            <div class="bg-white rounded-lg shadow col-md-12" style="margin-top:2%">
+                                <div class="p-5">
+
+                            <div class="row ">
+                                <div class="col-md-6"><strong>{{ job_request_lists.job_position }}</strong><br><span class="small text-gray">{{ job_request_lists.job_employer_company }}</span></div>
+                                <div class="col-md-3"><strong>Job ID</strong>&nbsp;&nbsp;&nbsp;<font color="dodgerblue">#J{{ job_request_lists.id|add:"+886457" }}</font></div>
+                                <div class="col-md-3" align="right"><strong>Status</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {% if job_request_lists.job_expiry_date %}
+                                    {% if job_request_lists.job_expiry_date < today %}
+                                    <font color="red">Expired</font>
+                                    {% else %}
+                                    {% if job_request_lists.job_request_approval_status == True and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False %}
+                                    <font color="#00ff00">Accepted</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False or job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="orangered" class="blinking2">Pending</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == True and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="red">Rejected</font>
+                                {% endif %}
+                                    {% endif %}
+                                    {% else %}
+                                    {% if job_request_lists.job_request_approval_status == True and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False %}
+                                    <font color="#00ff00">Accepted</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == False or job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == False and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="orangered" class="blinking2">Pending</font>
+                                {% elif job_request_lists.job_request_approval_status == False and job_request_lists.job_request_reject_status == True and job_request_lists.job_request_reedit_status == True %}
+                                    <font color="red">Rejected</font>
+                                {% endif %}
+                                   {% endif %}
+                                </div>
+                            </div>
+                                <div class="row" style="margin-top:1.5%; ">
+                                    <div class="col-md-4"><strong>Apply Date</strong><br><span class="small text-gray">{{ job_request_lists.job_created_date|date:'d M Y' }}</span></div>
+                                    <div class="col-md-4"><strong>Post Date</strong><br>
+                                        {% if job_request_lists.job_posted_date %}
+                                        <span class="small text-gray" style="color:royalblue;">{{ job_request_lists.job_posted_date|date:'d M Y' }}</span>
+                                        {% else %}
+                                        <span class="small text-gray" style="color:red;">unassigned</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-4"><strong>Expiry Date</strong><br>
+                                    {% if job_request_lists.job_expiry_date %}
+                                        {% if job_request_lists.job_expiry_date < today %}
+                                        <span class="small text-gray" style="color:red;">expired</span>
+                                        {% else %}
+                                        <span class="small text-gray" style="color:royalblue;">{{ job_request_lists.job_expiry_date|date:'d M Y' }}</span>
+                                        {% endif %}
+                                        {% else %}
+                                        <span class="small text-gray" style="color:red;">unassigned</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row " style="margin-top:1%">
+                                    <div class="col-md-3"><span class="fa fa-dollar mr-3" style="color:	crimson;"></span><font color="crimson">{{ job_request_lists.job_salary }}</font></div>
+                                    <div class="col-md-2"><span class="fa fa-briefcase mr-3"></span><font>{{ job_request_lists.job_type }}</font></div>
+                                     <div class="col-md-7"><span class="fa fa-envelope mr-3"></span><font>{{ job_request_lists.job_employer_email }}</font></div>
+
+                                </div>
+                                <div class="row " style="margin-top:1.5%">
+                                     <div class="col-md-12"><span class="fa fa-map-marker mr-3"></span><font>{{ job_request_lists.job_location }}</font></div>
+                                </div>
+                                    </div>
+                                 <div class="row" style="padding:0;">
+                                     {% if job_request_lists.job_request_reedit_status == True and job_request_lists.job_request_reject_status == True and job_request_lists.job_request_approval_status == False %}
+                                     <div class="col-md-4 btn-hover" style="border-top: medium solid whitesmoke;"><button data-toggle="modal" data-target="#adminNoticeModal{{ job_request_lists.id}}"  style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none;">
+                                         <span class="fa fa-envelope mr-3 fa-lg " ></span>
+                                         <span class="fa fa-exclamation-circle mr-3 fa-lg blinking3 "  style="color:red"></span>
+                                         <font size="3.5%">Message</font></button></div>
+                                     {% else %}
+                                     <div class="col-md-4 btn-hover" style="border-top: medium solid whitesmoke;" ><button  onclick="return confirm('Currently no notice for your job application')" style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none;"><span class="fa fa-envelope mr-3 fa-lg"></span><font size="3.5%">Message</font></button></div>
+                                     {% endif %}
+                                      <div class="col-md-4 btn-hover" style="border-left: medium solid whitesmoke;border-right: medium solid whitesmoke;border-top: medium solid whitesmoke;"><a href="{% url 'job_vacancy_applied_list' job_request_lists.pk  %}" style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none; color:black; text-align: center;"><span class="fa fa-user-plus mr-3 fa-lg"></span><font size="3.5%">Applicant</font></a></div>
+                                      <div class="col-md-4 btn-hover" style="border-top: medium solid whitesmoke;"><button style="width: 100%; display:block;padding:4%;margin: 10px 0;background-color:transparent;border: none;outline:none;" data-toggle="modal" data-target="#exampleModalCenter{{ job_request_lists.id}}"><span class="fa fa-info-circle mr-3 fa-lg"></span><font size="3.5%">Detail</font></button></div>
+                                 </div>
+
+                            </div>
+
+
+
+                            {% endif %}
+                            <!-- Modal -->
+                            <div class="modal fade" id="adminNoticeModal{{ job_request_lists.id}}" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel{{ job_request_lists.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-md" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel{{ job_request_lists.id}}">EzFinance Reject Notice</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                             <div class="p-2 col-md-12">
+                                                 <div class="row" >
+                                                             <div class="col-md-6"><strong>EzFinance Notice [Job ID - #J{{ job_request_lists.id|add:"+886457" }}]</strong></div>
+                                                     <div class="col-md-6" align="right"><strong>Status</strong> &nbsp;<font color="red" class="blinking3">Rejected</font></div>
+
+                                                 </div>
+                                                 <div class="row" style="margin-top:1%;">
+                                                     <div class="col-md-12"><textarea rows="auto" style="height:100%; width:100%; color:mediumblue; padding:0.5%;" readonly >{{ job_request_lists.job_admin_notice }}</textarea>
+                                                            </div>
+                                                 </div>
+                                                 <div class="row" style="margin-top:1%;">
+                                                     <div class="col-md-12"><span class="small text-gray " style="color:mediumblue;"><strong>NOTE:</strong> You are allowed to edit your job application and resubmit by choosing MODIFY button.</span></div>
+
+                                                 </div>
+                                             </div>
+                                        </div>
+                                        <div class="modal-footer">
+
+                                            <a href="{% url 'job_application_modify' job_request_lists.pk  %}" type="button" class="btn btn-primary"><span class="fa fa-pencil-square-o mr-3 fa-lg"></span>&nbsp;MODIFY&nbsp;</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter{{ job_request_lists.id}}" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle{{ job_request_lists.id}}" aria-hidden="true" >
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content" >
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle{{ job_request_lists.id}}" align="center">Job Description</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="p-3 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-2"><strong>Applicant Name</strong></div>
+                                                    <div class="col-md-3"><font color="	mediumblue">{{ job_request_lists.job_employer_name }}</font>
+                                                    </div>
+                                                    <div class="col-md-2" align="center"><strong>Company</strong></div>
+                                                    <div class="col-md-3"><font color="	mediumblue">{{ job_request_lists.job_employer_company }}</font>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top:1.5%;margin-bottom:2%;">
+                                                    <div class="col-md-1"><strong>Email</strong></div>
+                                                    <div class="col-md-3"><font color="	mediumblue">{{ job_request_lists.job_employer_email }}</font></div>
+                                                        <div class="col-md-2" align="center"><strong>Contact no</strong></div>
+                                                    <div class="col-md-2"><font color="	mediumblue">{{ job_request_lists.job_employer_contact_number }}</font></div>
+                                                    <div class="col-md-2" align="center"><strong>Vacancy Period</strong></div>
+                                                     <div class="col-md-1"><font color="mediumblue">{{ job_request_lists.job_available_day }}&nbsp;days</font></div>
+                                                </div>
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" data-toggle="tab"
+                                                           href="#description_job" role="tab"
+                                                           aria-controls="home" aria-selected="true">{{ job_request_lists.job_position }}</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade show active" id="description_job"
+                                                         role="tabpanel"
+                                                         aria-labelledby="home-tab">
+                                                        <div class="row" style="margin-top:1.5%;">
+                                                            <div class="col-md-1"><strong>Job Type</strong></div>
+                                                            <div class="col-md-3" ><font color="mediumblue">{{ job_request_lists.job_type }}</font>
+                                                            </div>
+                                                            <div class="col-md-2" align="center">
+                                                                <strong>Job Salary</strong></div>
+                                                            <div class="col-md-4"><font color="	crimson">{{ job_request_lists.job_salary }}</font>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top:1.5%;">
+                                                             <div class="col-md-2"><strong>Job Location</strong></div>
+                                                             <div class="col-md-10" ><font color="mediumblue">{{ job_request_lists.job_location }}</font>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top:1.5%;">
+                                                             <div class="col-md-2"><strong>Job Description</strong></div>
+                                                            <div class="col-md-10"><textarea rows="auto" style="height:100%; width:100%; color:mediumblue; padding:0.5%;" readonly >{{ job_request_lists.job_general_description }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top:1.5%;">
+                                                             <div class="col-md-2"><strong>Job Duties</strong></div>
+                                                            <div class="col-md-10"><textarea rows="auto" style="height:100%; width:100%; color:mediumblue; padding:0.5%;" readonly >{{ job_request_lists.job_duties }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-top:1.5%;">
+                                                             <div class="col-md-2"><strong>Job Requirements</strong></div>
+                                                            <div class="col-md-10"><textarea rows="auto" style="height:100%; width:100%; color:mediumblue; padding:0.5%;" readonly >{{ job_request_lists.job_requirement }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% if users.has_other_pages %}
+                        <div style="margin-top:2%" >
+                        <ul class="pagination">
+                            {% if users.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a>
+                            </li>
+                            {% else %}
+                            <li class="disabled page-item"><span class="page-link">Previous</span></li>
+                            {% endif %}
+                            {% for i in users.paginator.page_range %}
+                            {% if users.number == i %}
+                            <li class=" page-item"><span class="page-link">{{ i }} <span
+                                    class="sr-only">(current)</span></span>
+                            </li>
+                            {% else %}
+                            <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if users.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?page={{ users.next_page_number }}">Next</a></li>
+                            {% else %}
+                            <li class="disabled page-item"><span class="page-link">Next</span></li>
+                            {% endif %}
+                        </ul>
+                            </div>
+                        {% endif %}
+                            {% else %}
+                            <div class="row">
+                                <div class="col-md-12" align="center" >
+                                    <img src="https://i.pinimg.com/originals/43/3b/6c/433b6c5336c72a21bcfd9db8d831562a.gif" height="85%" >
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+{% endblock content %}

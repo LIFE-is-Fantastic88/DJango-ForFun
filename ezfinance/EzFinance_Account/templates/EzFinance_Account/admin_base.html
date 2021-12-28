@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'EzFinance_Account/css/style.css' %}">
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+
+    <!-- expenses manager CSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <title>EzFinance-admin</title>
+</head>
+<body>
+<style>
+    .blinking1{
+    animation:blinking1Text 1.3s infinite;
+}
+@keyframes blinking1Text{
+    0%{     color: yellow;    }
+    49%{    color: yellow; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: yellow;    }
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'admin_site_home' %}">EzFinance Administration Site</a>
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+
+        </ul>
+        <ul class="navbar-nav  my-2 my-lg-0">
+            <li class="nav-item active ">
+                <a class="nav-link" href="{% url 'logout' %}">Logout<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!-- left navigation panel -->
+<div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+        <div class="custom-menu">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            </button>
+        </div>
+        <div class="img bg-wrap text-center py-4">
+            <div class="user-logo">
+                <div class="img" style="background-image">
+                    <img class="img" style="background-image" src="{{ user.account.image.url }}">
+                </div>
+                <h3>{{ user.first_name }}&nbsp{{ user.last_name }}</h3>
+            </div>
+        </div>
+        <ul class="list-unstyled components mb-5">
+            <li class="active">
+                <a href="{% url 'admin_site_home' %}"><span class="fa fa-home mr-3"></span>HOME</a>
+            </li>
+            <li >
+                <a href="{% url 'admin_site_profile' %}"><span class="fa fa-support mr-3"></span>PROFILE</a>
+            </li>
+
+            <li>
+                <a href="{% url 'admin_transaction_analysis' %}"><span class="fa fa-gift mr-3"></span>
+                    TRANSACTION</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_fixed_deposit_analysis' %}"><span class="fa fa-trophy mr-3"></span> FIXED
+                    DEPOSIT</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_customer_service' %}"><span class="fa fa-cog mr-3"></span> COMPLAINT
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;
+                {% if case_check > 0 %}
+                    <span class="fa fa-exclamation-triangle fa-lg blinking1" style="color:yellow;"></span>
+                    {% endif %}
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_announcement' %}"><span class="fa fa-gift mr-3"></span>
+                    ANNOUNCEMENT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {% if announcement_check > 0 %}
+                    <span class="fa fa-exclamation-triangle fa-lg blinking1" style="color:yellow;"></span>
+                    {% endif %}
+                </a>
+
+
+            </li>
+            <li>
+                <a href="{% url 'admin_job_vacancy' %}"><span class="fa fa-briefcase mr-3"></span>JOB REQUEST
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% if application_check > 0 %}
+                    <span class="fa fa-exclamation-circle fa-lg blinking1" style="color:yellow;"></span>
+                    {% endif %}
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-- Page Content  -->
+    {% block content %}{% endblock %}
+</div>
+<!-- graph -->
+
+<!-- Optional JavaScript -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{% static 'EzFinance_Account/js/jquery.min.js' %}"></script>
+<script src="{% static 'EzFinance_Account/js/popper.js' %}"></script>
+<script src="{% static 'EzFinance_Account/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'EzFinance_Account/js/main.js' %}"></script>
+<script src="{% static 'EzFinance_Account/js/expenses_manager.js' %}"></script>
+<script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

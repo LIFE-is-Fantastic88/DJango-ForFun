@@ -1,0 +1,208 @@
+{% extends "EzFinance_Account/admin_base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    #filter_form {
+        width: 50%;
+        margin-top: 10px;
+        margin-left : 74%
+    }
+.fabutton {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+.fa-trash-hover:hover > .fa-trash{
+    color:black;
+}
+.fa-upload-hover:hover > .fa-cloud-upload{
+    color:black;
+}
+.fa-undo-hover:hover > .fa-undo{
+    color:black;
+}
+@-webkit-keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+@-o-keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+@keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+.invalid {
+  -webkit-animation: invalid 1.6s infinite; /* Safari 4+ */
+  -moz-animation:    invalid 1.6s infinite; /* Fx 5+ */
+  -o-animation:      invalid 1.6s infinite; /* Opera 12+ */
+  animation:         invalid 1.6s infinite; /* IE 10+ */
+}
+
+</style>
+<div class="container emp-profile">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h2>
+                    Announcement Management
+                </h2>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} ">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <form method="post">
+                {% csrf_token %}
+                {{ announcement_form|crispy }}
+                <div class="row" >
+                    <div class="col-md-12" align="right">
+                        <button name="announcement_save" class="btn btn-primary" type="submit">
+                    Confirm
+                </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+<h4>
+                Announcement List
+            </h4>
+            <hr>
+            <div class="row">
+
+                {# icon and search-box #}
+                <div class="col-md-12" style="margin-bottom:20px;margin-top:10px;text-align:right">
+                    <form method="get">
+                        <button type="submit" id="completed-task" class="fabutton">
+                            <i class="fa fa-search"></i>&nbsp;
+                        </button>
+
+                        <input name="q" type="text" placeholder="Search" aria-label="Search">
+                    </form>
+                </div>
+
+                {# artist-list section #}
+
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col">Created Date<br>Date & Time</th>
+                    <th scope="col">Publish Date</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Announcement Body</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+
+                </tr>
+                </thead>
+                <tbody align="center">
+                {% if announcement_list %}
+                {% for all_announcement_list in users %}
+                {% if all_announcement_list.publish_date == today %}
+                <tr class="invalid">
+
+                    <th scope="row">{{ all_announcement_list.created_date|date:'d M Y H:i:s' }}</th>
+                    <td>{{ all_announcement_list.publish_date|date:'d M Y' }}</td>
+                    <td>{{ all_announcement_list.announcement_subject }}</td>
+                    <td>{{ all_announcement_list.announcement_content }}</td>
+                    {% if all_announcement_list.announcement_status == False %}
+                    <td>
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Pending</span>
+                        </div>
+                    </td>
+                    <td><a href="{% url 'announcement_publish' all_announcement_list.pk  %}" onclick="return confirm('Are you sure you want to publish this announcement')" class="fa-upload-hover"><span class="fa fa-cloud-upload fa-2x" ></span></a></td>
+                    {% else %}
+                    <td><span class="fa fa-check fa-2x" style="color:lawngreen"></span></td>
+                    <td><a href="{% url 'announcement_undo' all_announcement_list.pk  %}" onclick="return confirm('Are you sure you want to retrieve this announcement')" class="fa-undo-hover"><span class="fa fa-undo fa-2x" ></span></a></td>
+                    {% endif %}
+
+                    <td><a href="{% url 'announcement_delete' all_announcement_list.pk  %}" onclick="return confirm('Are you sure you want to delete this announcement')" class="fa-trash-hover"><span class="fa fa-trash fa-2x" ></span></a></td>
+                </tr>
+                {% else %}
+                 <tr>
+
+                    <th scope="row">{{ all_announcement_list.created_date|date:'d M Y H:i:s' }}</th>
+                    <td>{{ all_announcement_list.publish_date|date:'d M Y' }}</td>
+                    <td>{{ all_announcement_list.announcement_subject }}</td>
+                    <td>{{ all_announcement_list.announcement_content }}</td>
+                    {% if all_announcement_list.announcement_status == False %}
+                    <td>
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Pending</span>
+                        </div>
+                    </td>
+                    <td><a href="{% url 'announcement_publish' all_announcement_list.pk  %}" onclick="return confirm('Are you sure you want to publish this announcement')" class="fa-upload-hover"><span class="fa fa-cloud-upload fa-2x" ></span></a></td>
+                    {% else %}
+                    <td><span class="fa fa-check fa-2x" style="color:lawngreen"></span></td>
+                    <td><a href="{% url 'announcement_undo' all_announcement_list.pk  %}" onclick="return confirm('Are you sure you want to retrieve this announcement')" class="fa-undo-hover"><span class="fa fa-undo fa-2x" ></span></a></td>
+                    {% endif %}
+
+                    <td><a href="{% url 'announcement_delete' all_announcement_list.pk  %}" onclick="return confirm('Are you sure you want to delete this announcement')" class="fa-trash-hover"><span class="fa fa-trash fa-2x" ></span></a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6" align="center">
+                        No Record Show
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% if users.has_other_pages %}
+            <ul class="pagination">
+                {% if users.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Previous</span></li>
+                {% endif %}
+                {% for i in users.paginator.page_range %}
+                {% if users.number == i %}
+                <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if users.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}">Next</a></li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

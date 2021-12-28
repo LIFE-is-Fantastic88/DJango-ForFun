@@ -1,0 +1,352 @@
+{% extends "EzFinance_Account/admin_base.html"%}
+{% block content %}
+<style>
+    #filter_form {
+        width: 50%;
+        margin-top: 10px;
+        margin-left : 74%
+    }
+.fabutton {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+ .blinking2{
+    animation:blinking2Text 1s infinite;
+}
+@keyframes blinking2Text{
+    0%{     color: orangered;    }
+    49%{    color: orangered; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: orangered;    }
+}
+ .blinking3{
+    animation:blinking3Text 1.3s infinite;
+}
+@keyframes blinking3Text{
+    0%{     color: red;    }
+    49%{    color: red; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: red;    }
+}
+@-webkit-keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+@-moz-keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+@-o-keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+@keyframes invalid {
+  from { background-color: 	mistyrose; }
+  to { background-color: inherit; }
+}
+.invalid {
+  -webkit-animation: invalid 1.6s infinite; /* Safari 4+ */
+  -moz-animation:    invalid 1.6s infinite; /* Fx 5+ */
+  -o-animation:      invalid 1.6s infinite; /* Opera 12+ */
+  animation:         invalid 1.6s infinite; /* IE 10+ */
+}
+
+</style>
+<div class="container emp-profile">
+{% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} ">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+    <div class="col-md-14" >
+        <div class="bg-white rounded-lg p-5 shadow">
+            <div class="row col-md-14">
+                <div class="col-md-6" >
+                    <h4>
+                        Pending Job Request
+                    </h4>
+                </div>
+                <div class="col-md-6" align="right">
+                    <h4>
+                        Total &nbsp; <font color="darkcyan">{{ job_application_list_pending_total }}</font>
+                    </h4>
+                </div>
+            </div>
+
+
+            <hr>
+        <table class="table table-hover">
+                <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col">Job ID</th>
+                    <th scope="col">Apply Date</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">Job Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody align="center">
+                {% if job_application_list_pending %}
+                {% for job_application_lists_pending in users %}
+                <tr data-toggle="tooltip" title="Please click external link icon to process user job request.">
+                    <th scope="row"><font color="dodgerblue">#J{{ job_application_lists_pending.id|add:"+886457" }}</font></th>
+                    <td>{{ job_application_lists_pending.job_created_date|date:'d M Y' }}</td>
+                    <td>{{ job_application_lists_pending.job_employer_name }}</td>
+                    <td>{{ job_application_lists_pending.job_employer_company }}</td>
+                    <td>{{ job_application_lists_pending.job_type }}</td>
+                    <td>
+                        {% if job_application_lists_pending.job_request_approval_status == False and job_application_lists_pending.job_request_reject_status == False and job_application_lists_pending.job_request_reedit_status == False  %}
+                        <font color="orangered" class="blinking2">Pending</font>
+                        {% else %}
+                        <font color="red" class="blinking3">Error</font>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'admin_job_vacancy_process' job_application_lists_pending.pk  %}"><span class="fa fa fa-external-link fa-lg"></span></a></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="7" align="center">
+                        No Record Show
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+             {% if users.has_other_pages %}
+            <ul class="pagination">
+                {% if users.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Previous</span></li>
+                {% endif %}
+                {% for i in users.paginator.page_range %}
+                {% if users.number == i %}
+                <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if users.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}">Next</a></li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-lg p-5 shadow" style="margin-top:2%">
+            <div class="row col-md-14">
+                <div class="col-md-6" >
+                    <h4>
+                        Approved Job Request
+                    </h4>
+                </div>
+                <div class="col-md-6" align="right">
+                    <h4>
+                        Total &nbsp; <font color="darkcyan">{{ job_application_list_approve_total }}</font>
+                    </h4>
+                </div>
+            </div>
+            <hr>
+        <table class="table table-hover">
+                <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col">Job ID</th>
+                    <th scope="col">Expiry Date</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">Job Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody align="center">
+                {% if job_application_list_approve %}
+                {% for job_application_lists_approve in approve_users %}
+                {% if job_application_lists_approve.job_expiry_date > today_date %}
+                <tr data-toggle="tooltip" title="Please click external link icon to study user job request.">
+                    <th scope="row"><font color="dodgerblue">#J{{ job_application_lists_approve.id|add:"+886457" }}</font></th>
+                    <td>{{ job_application_lists_approve.job_expiry_date|date:'d M Y' }}</td>
+                    <td>{{ job_application_lists_approve.job_employer_name }}</td>
+                    <td>{{ job_application_lists_approve.job_employer_company }}</td>
+                    <td>{{ job_application_lists_approve.job_type }}</td>
+                    <td>
+                        {% if job_application_lists_approve.job_request_approval_status == True and job_application_lists_approve.job_request_reject_status == False and job_application_lists_approve.job_request_reedit_status == False  %}
+                        <font color="#00e600" >Active</font>
+                        {% else %}
+                        <font color="red" class="blinking3">Error</font>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'approved_job_vacancy_detail' job_application_lists_approve.pk  %}"><span class="fa fa fa-external-link  fa-lg" data-toggle="tooltip" title="click this button to to study user job request"></span></a></td>
+                    <td><a href="{% url 'admin_job_vacancy_delete' job_application_lists_approve.pk  %}" onclick="return confirm('Are you sure to delete job application. ( ID: #J{{ job_application_lists_approve.id|add:'+886457' }} )')"><span class="fa fa fa-trash  fa-lg" data-toggle="tooltip" title="click this button to delete application"></span></a></td>
+                </tr>
+                {% else %}
+                <tr data-toggle="tooltip" title="Please delete this expired application." class="invalid">
+                    <th scope="row"><font color="dodgerblue">#J{{ job_application_lists_approve.id|add:"+886457" }}</font></th>
+                    <td>{{ job_application_lists_approve.job_expiry_date|date:'d M Y' }}</td>
+                    <td>{{ job_application_lists_approve.job_employer_name }}</td>
+                    <td>{{ job_application_lists_approve.job_employer_company }}</td>
+                    <td>{{ job_application_lists_approve.job_type }}</td>
+                    <td>
+                        {% if job_application_lists_approve.job_request_approval_status == True and job_application_lists_approve.job_request_reject_status == False and job_application_lists_approve.job_request_reedit_status == False  %}
+                        <font color="red" class="blinking3">Expired</font>
+                        {% else %}
+                        <font color="red" class="blinking3">Error</font>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'approved_job_vacancy_detail' job_application_lists_approve.pk  %}"><span class="fa fa fa-external-link  fa-lg" data-toggle="tooltip" title="click this button to to study user job request"></span></a></td>
+                    <td><a href="{% url 'admin_job_vacancy_delete' job_application_lists_approve.pk  %}"><span class="fa fa fa-trash  fa-lg" data-toggle="tooltip" title="click this button to delete application"></span></a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="8" align="center">
+                        No Record Show
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+             {% if approve_users.has_other_pages %}
+            <ul class="pagination">
+                {% if approve_users.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ approve_users.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Previous</span></li>
+                {% endif %}
+                {% for i in approve_users.paginator.page_range %}
+                {% if approve_users.number == i %}
+                <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if approve_users.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ approve_users.next_page_number }}">Next</a></li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <div class="bg-white rounded-lg p-5 shadow" style="margin-top:2%">
+            <div class="row col-md-14">
+                <div class="col-md-6" >
+                    <h4>
+                        Rejected Job Request
+                    </h4>
+                </div>
+                <div class="col-md-6" align="right">
+                    <h4>
+                        Total &nbsp; <font color="darkcyan">{{ job_application_list_edit_total }}</font>
+                    </h4>
+                </div>
+            </div>
+
+
+            <hr>
+        <table class="table table-hover">
+                <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col">Job ID</th>
+                    <th scope="col">Apply Date</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">Job Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody align="center">
+                {% if job_application_list_edit %}
+                {% for job_application_lists_edit in rejected_users %}
+                {% if job_application_lists_edit.job_request_reject_status == False %}
+                <tr data-toggle="tooltip" title="Please click external link icon to process user job request." class="invalid">
+                    <th scope="row"><font color="dodgerblue">#J{{ job_application_lists_edit.id|add:"+886457" }}</font></th>
+                    <td>{{ job_application_lists_edit.job_created_date|date:'d M Y' }}</td>
+                    <td>{{ job_application_lists_edit.job_employer_name }}</td>
+                    <td>{{ job_application_lists_edit.job_employer_company }}</td>
+                    <td>{{ job_application_lists_edit.job_type }}</td>
+                    <td>
+                        {% if job_application_lists_edit.job_request_approval_status == False and job_application_lists_edit.job_request_reject_status == False and job_application_lists_edit.job_request_reedit_status == True  %}
+                        <font color="#00e600">Resubmit</font>
+                        {% else %}
+                        <font color="red" class="blinking3">Error</font>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'admin_job_vacancy_resubmit_process' job_application_lists_edit.pk  %}"><span class="fa fa fa-external-link fa-lg"></span></a></td>
+                </tr>
+
+                {% else %}
+                <tr data-toggle="tooltip" title="Please click external link icon to process user job request.">
+                    <th scope="row"><font color="dodgerblue">#J{{ job_application_lists_edit.id|add:"+886457" }}</font></th>
+                    <td>{{ job_application_lists_edit.job_created_date|date:'d M Y' }}</td>
+                    <td>{{ job_application_lists_edit.job_employer_name }}</td>
+                    <td>{{ job_application_lists_edit.job_employer_company }}</td>
+                    <td>{{ job_application_lists_edit.job_type }}</td>
+                    <td>
+                        {% if job_application_lists_edit.job_request_approval_status == False and job_application_lists_edit.job_request_reject_status == True and job_application_lists_edit.job_request_reedit_status == True  %}
+                        <font color="red" class="blinking3">Rejected</font>
+                        {% else %}
+                        <font color="red" class="blinking3">Error</font>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'admin_job_vacancy_resubmit_process' job_application_lists_edit.pk  %}"><span class="fa fa fa-external-link fa-lg"></span></a></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="7" align="center">
+                        No Record Show
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+             {% if rejected_users.has_other_pages %}
+            <ul class="pagination">
+                {% if rejected_users.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ rejected_users.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Previous</span></li>
+                {% endif %}
+                {% for i in rejected_users.paginator.page_range %}
+                {% if rejected_users.number == i %}
+                <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if rejected_users.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ rejected_users.next_page_number }}">Next</a></li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

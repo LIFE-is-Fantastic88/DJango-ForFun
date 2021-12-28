@@ -1,0 +1,225 @@
+{% extends "EzFinance_Account/admin_base.html"%}
+{% block content %}
+<style>
+    #filter_form {
+        width: 50%;
+        margin-top: 10px;
+        margin-left : 74%
+    }
+.fabutton {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+
+
+</style>
+<div class="container emp-profile">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h2>
+                    Transaction Analysis
+                </h2>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script type="text/javascript">
+
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawVisualization);
+
+function drawVisualization() {
+
+var data = new google.visualization.DataTable();
+data.addColumn('string', 'Month');
+data.addColumn('number', 'Fund Transfer');
+data.addColumn('number', 'Deposit');
+  data.addRows({{ data|safe }});
+
+  new google.visualization.LineChart(document.getElementById('curve_chart')).
+      draw(data,
+           {title: "Transaction Growth in {{currentYear}}",
+            height:400,
+            curveType: 'function',
+            isStacked:"true",
+            legend:{position: 'bottom'} }
+      );
+}
+
+            </script>
+            <div id="curve_chart" class="col-md-14" style="margin-top:0%"></div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+             <h4>
+                Fund Transfer
+            </h4>
+            <hr>
+            <div class="row">
+
+        {# icon and search-box #}
+        <div class="col-md-12" style="margin-bottom:20px;margin-top:10px;text-align:right">
+            <form method="get" >
+                <button type="submit" id="completed-task" class="fabutton">
+                    <i class="fa fa-search"></i>&nbsp;
+                </button>
+
+                <input name="q" type="text" placeholder="Search" aria-label="Search">
+            </form>
+        </div>
+
+        {# artist-list section #}
+
+    </div>
+<table class="table table-hover">
+                <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col">Transaction ID</th>
+                    <th scope="col">Transaction<br>Date & Time</th>
+                    <th scope="col">Transfer to</th>
+                    <th scope="col">Transfer from</th>
+                    <th scope="col">Bank</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Instruction</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody align="center">
+                {% if transaction_credit %}
+                {% for all_transaction_credit in users %}
+                <tr>
+                    <th scope="row">#{{ all_transaction_credit.id|add:"+898452530" }}</th>
+                    <td>{{ all_transaction_credit.transfer_date|date:'d M Y H:i:s' }}</td>
+                    <td>{{ all_transaction_credit.transfer_to }}</td>
+                    <td>{{ all_transaction_credit.user.id|add:"+6067071528" }}</td>
+                    <td>{{ all_transaction_credit.transfer_bank }}</td>
+                    <td>{{ all_transaction_credit.transfer_amount|floatformat:2 }}</td>
+                    <td>{{ all_transaction_credit.transfer_instruction }}</td>
+                    <td> </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6" align="center">
+                        No Record Show
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+             {% if users.has_other_pages %}
+        <ul class="pagination">
+            {% if users.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Previous</span></li>
+            {% endif %}
+            {% for i in users.paginator.page_range %}
+            {% if users.number == i %}
+            <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}">Next</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Next</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+        </div>
+    </div>
+
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+ <h4>
+                Deposit
+            </h4>
+            <hr>
+             <div class="row">
+
+        {# icon and search-box #}
+        <div class="col-md-12" style="margin-bottom:20px;margin-top:10px;text-align:right">
+            <form method="get" >
+                <button type="submit"  class="fabutton">
+                    <i class="fa fa-search"></i>&nbsp;
+                </button>
+
+                <input name="p" type="text" placeholder="Search" aria-label="Search">
+            </form>
+        </div>
+
+        {# artist-list section #}
+
+    </div>
+            <table class="table table-hover">
+                <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col">Transaction ID</th>
+                    <th scope="col">Transaction<br>Date & Time</th>
+                    <th scope="col">Creditcard num</th>
+                    <th scope="col">Creditcard name</th>
+                    <th scope="col">Deposit Account</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody align="center">
+                {% if transaction_debit %}
+                {% for all_transaction_debit in deposit_users %}
+                <tr>
+                    <th scope="row">#{{ all_transaction_debit.id|add:"+331205569" }}</th>
+                    <td>{{ all_transaction_debit.deposit_date|date:'d M Y H:i:s' }}</td>
+                    <td>{{ all_transaction_debit.creditcard_num }}</td>
+                    <td>{{ all_transaction_debit.creditcard_name }}</td>
+                    <td>{{ all_transaction_debit.user.id|add:"+6067071528" }}</td>
+                    <td>{{ all_transaction_debit.deposit_amount|floatformat:2 }}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6" align="center">
+                        No Record Show
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% if deposit_users.has_other_pages %}
+        <ul class="pagination">
+            {% if deposit_users.has_previous %}
+            <li class="page-item"><a class="page-link" href="?deposit_page={{ deposit_users.previous_page_number }}">Previous</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Previous</span></li>
+            {% endif %}
+            {% for i in deposit_users.paginator.page_range %}
+            {% if deposit_users.number == i %}
+            <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li class=" page-item"><a class="page-link" href="?deposit_page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if deposit_users.has_next %}
+            <li class="page-item"><a class="page-link" href="?deposit_page={{ deposit_users.next_page_number }}">Next</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Next</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+    </div>
+</div>
+{% endblock content %}

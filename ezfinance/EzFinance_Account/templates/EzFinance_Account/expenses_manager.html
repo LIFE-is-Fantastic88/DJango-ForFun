@@ -1,0 +1,592 @@
+{% extends "EzFinance_Account/base.html"%}
+{% block content %}
+{% load staticfiles %}
+<style>
+    .progress {
+  width: 150px;
+  height: 150px;
+  background: none;
+  position: relative;
+}
+
+.progress::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress>span {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.progress .progress-left {
+  left: 0;
+}
+
+.progress .progress-bar {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-width: 6px;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+}
+
+.progress .progress-left .progress-bar {
+  left: 100%;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-left: 0;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+
+.progress .progress-right {
+  right: 0;
+}
+
+.progress .progress-right .progress-bar {
+  left: -100%;
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-right: 0;
+  -webkit-transform-origin: center right;
+  transform-origin: center right;
+}
+
+.progress .progress-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSE
+* ==========================================
+*
+*/
+
+body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+
+.rounded-lg {
+  border-radius: 1rem;
+}
+
+.text-gray {
+  color: #aaa;
+}
+
+div.h4 {
+  line-height: 1rem;
+}
+
+.progress1{display:-ms-flexbox;display:flex;height:1rem;overflow:hidden;font-size:.75rem;background-color:#e9ecef;border-radius:.25rem}.progress-bar1{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;-ms-flex-pack:center;justify-content:center;overflow:hidden;color:#fff;text-align:center;white-space:nowrap;background-color:#007bff;transition:width .6s ease}@media (prefers-reduced-motion:reduce){.progress-bar1{transition:none}}
+.progress1 > .progress-completed {
+	position: absolute;
+	margin-left:60%;
+	font-weight: 500;
+    margin-top:0.3%;
+}
+
+
+</style>
+
+<div class="container emp-profile">
+    <div class="row">
+
+        <!-- For demo purpose -->
+        <div class="col-lg-12 mx-auto mb-5 text-white text-center">
+            <h1> My Expenses Manager </h1>
+
+
+        </div>
+        <div class="col-lg-12 mx-auto mb-5 text-white text-center">
+            <h5>{{ expenses_list.startdate }}&nbsp-&nbsp{{ expenses_list.enddate }}</h5>
+        </div>
+        <div class="col-lg-12 " style="margin-top:0%;margin-bottom:0%;">
+              {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+        </div>
+        <!-- END -->
+        <div class="col-lg-12 " style="margin-top:0%;margin-bottom:1%;" align="right">
+            <button type="button"  class="btn btn-info" data-toggle="modal" data-target="#exampleModalScrollable">
+  Expenses history
+</button>
+        </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Expenses History <br>
+             <span class="small text-gray">{{ expenses_list.startdate }} to {{ expenses_list.enddate }}</span> </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Expenses</th>
+            <th scope="col">Spent</th>
+
+        </tr>
+        </thead>
+        <tbody >
+
+        {% if expenses_record %}
+        {% for expenselist in expenses_record %}
+        <tr>
+
+            <td>{{ expenselist.expenses_date }}</td>
+            <td>{{ expenselist.expenses_type }}</td>
+            <td>{{ expenselist.expenses_amount }}</td>
+
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3" align="center">
+                No Record Show
+            </td>
+        </tr>
+        {% endif %}
+
+
+        </tbody>
+
+    </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="bg-white rounded-lg p-5 shadow">
+                <h2 class="h6 font-weight-bold text-center mb-4">Net Saving</h2>
+
+                <!-- Progress bar 1 -->
+                <div class="progress mx-auto" data-value='{{net_saving_percentage|floatformat:2}}'>
+          <span class="progress-left">
+                        <span class="progress-bar border-primary"></span>
+          </span>
+                    <span class="progress-right">
+                        <span class="progress-bar border-primary"></span>
+          </span>
+                    <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                        <div class="h3 font-weight-bold">{{net_saving_percentage|floatformat:2}}<sup class="small">%</sup></div>
+                        <span class="small text-gray">used</span>
+                    </div>
+                </div>
+                <!-- END -->
+
+                <!-- Demo info -->
+                <div class="row text-center mt-4">
+                    <div class="col-6 border-right">
+                        <div class="h6 font-weight-bold mb-0">${{ expenses_list.net_disposable_income|floatformat:2 }}</div>
+                        <span class="small text-gray">Net Disposable Income</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="h6 font-weight-bold mb-0">${{ expenses_list.total_expenditure|floatformat:2 }}</div>
+                        <span class="small text-gray">Total Expenditure</span>
+                    </div>
+                </div>
+                <!-- END -->
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="bg-white rounded-lg p-5 shadow">
+                <h2 class="h6 font-weight-bold text-center mb-4">Budget Plan</h2>
+
+                <!-- Progress bar 2 -->
+                <div class="progress mx-auto" data-value='{{budget_plan_percentage|floatformat:2}}'>
+          <span class="progress-left">
+                        <span class="progress-bar border-danger"></span>
+          </span>
+                    <span class="progress-right">
+                        <span class="progress-bar border-danger"></span>
+          </span>
+                    <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                        <div class="h3 font-weight-bold">{{budget_plan_percentage|floatformat:2}}<sup class="small">%</sup></div>
+                        <span class="small text-gray">left</span>
+                    </div>
+                </div>
+                <!-- END -->
+
+                <!-- Demo info-->
+                <div class="row text-center mt-4">
+                    <div class="col-6 border-right">
+                        <div class="h6 font-weight-bold mb-0">${{ expenses_list.budget_plan|floatformat:2 }}</div>
+                        <span class="small text-gray">Total Budgeted in Plan</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="h6 font-weight-bold mb-0">${{ expenses_list.budget_plan_remaining|floatformat:2 }}</div>
+                        <span class="small text-gray">Remaining to Spend in Budget</span>
+                    </div>
+                </div>
+                <!-- END -->
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="bg-white rounded-lg p-5 shadow">
+                <h2 class="h6 font-weight-bold text-center mb-4">Saving Plan</h2>
+
+                <!-- Progress bar 3 -->
+                <div class="progress mx-auto" data-value='{{saving_plan_percentage|floatformat:2}}'>
+          <span class="progress-left">
+                        <span class="progress-bar border-success"></span>
+          </span>
+                    <span class="progress-right">
+                        <span class="progress-bar border-success"></span>
+          </span>
+                    <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+                        <div class="h3 font-weight-bold">{{saving_plan_percentage|floatformat:2}}<sup class="small">%</sup></div>
+                        <span class="small text-gray">saved</span>
+                    </div>
+                </div>
+                <!-- END -->
+
+                <!-- Demo info -->
+                <div class="row text-center mt-4">
+                    <div class="col-6 border-right">
+                        <div class="h6 font-weight-bold mb-0">{{ expenses_list.net_disposable_income|floatformat:2 }}</div>
+                        <span class="small text-gray">Net disposable income</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="h6 font-weight-bold mb-0">{{ expenses_list.provisional_balance|floatformat:2 }}</div>
+                        <span class="small text-gray">Provisional Balance</span>
+                    </div>
+                </div>
+                <!-- END -->
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-md-14 ">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <div class="h6 font-weight-bold ">Budget Spent</div>
+            <div class="progress1 " style="vertical-align:baseline;height:30px;">
+                <div class="progress-bar1 bg-warning" role="progressbar" style="width: {{budget_spent|floatformat:2}}%;height:30px;"
+                     aria-valuenow="{{budget_spent|floatformat:2}}"
+                     aria-valuemin="0" aria-valuemax="100"></div>
+                <span class="progress-completed  " style="font-size:15px">{{budget_spent|floatformat:2}}% spent</span>
+            </div>
+            <hr>
+            <div class="h6 font-weight-bold ">Salary/Wages</div>
+
+            <div style="width: 100%; margin-top:0%">
+                <p class=" small text-gray" style="float: left;">Income</p>
+                <p class="  text-gray" style="float: right;">${{ expenses_list.net_disposable_income|floatformat:2 }}</p>
+            </div>
+            <br>
+            <hr>
+            <div style="width: 100%; margin-top:0%">
+                <p class="h6 font-weight-bold" style="float: left;">Budget Plan</p>
+                <p class=" text-gray" style="float: right;">${{ expenses_list.budget_plan|floatformat:2 }}</p>
+            </div>
+            <br>
+            <hr>
+            <div style="width: 100%; margin-top:0%" >
+                <p class="h6 font-weight-bold " style="float: left;">Total Expenditure</p>
+                <p class=" text-gray" style="float: right;">${{ expenses_list.total_expenditure|floatformat:2 }}</p>
+            </div>
+            <br>
+            <hr>
+            <div style="width: 100%; margin-top:0%">
+                <p class="h6 font-weight-bold" style="float: left;">Remaining to spend</p>
+                <p class=" text-gray" style="float: right;">${{ expenses_list.budget_plan_remaining|floatformat:2 }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-14 " style="margin-top:15px">
+        <div class="bg-white rounded-lg p-5 shadow">
+
+            <h5 class="font-weight-bold">Daily Living</h5>
+
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                            <a href="{% url 'dailyliving_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.dailyliving_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.dailyliving_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.dailyliving_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{dailyliving_used|floatformat:2}}%;"
+                                     aria-valuenow="{{dailyliving_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{dailyliving_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            <hr>
+            <h5 class="font-weight-bold">Education</h5>
+            <form method="post">
+                {% csrf_token %}
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                            <a href="{% url 'education_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.education_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.education_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.education_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{education_used|floatformat:2}}%;"
+                                     aria-valuenow="{{education_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{education_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <h5 class="font-weight-bold">Entertainment</h5>
+            <form method="post">
+                {% csrf_token %}
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                            <a href="{% url 'entertainment_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.entertainment_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.entertainment_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.entertainment_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{entertainment_used|floatformat:2}}%;"
+                                     aria-valuenow="{{entertainment_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{entertainment_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <h5 class="font-weight-bold">Health Care</h5>
+            <form method="post">
+                {% csrf_token %}
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                          <a href="{% url 'healthcare_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.healthcare_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.healthcare_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.healthcare_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{healthcare_used|floatformat:2}}%;"
+                                     aria-valuenow="{{healthcare_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{healthcare_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <h5 class="font-weight-bold">Home/Rent</h5>
+            <form method="post">
+                {% csrf_token %}
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                            <a href="{% url 'homerental_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.rental_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.rental_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.rental_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{homerental_used|floatformat:2}}%;"
+                                     aria-valuenow="{{homerental_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{homerental_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <h5 class="font-weight-bold">Transportation</h5>
+            <form method="post">
+                {% csrf_token %}
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                            <a href="{% url 'transportation_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.transportation_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.transportation_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.transportation_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{transportation_used|floatformat:2}}%;"
+                                     aria-valuenow="{{transportation_used}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{transportation_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <h5 class="font-weight-bold">Loan Payment</h5>
+            <form method="post">
+                {% csrf_token %}
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                            <a href="{% url 'loan_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.loan_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.loan_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.loan_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{loan_used|floatformat:2}}%;"
+                                     aria-valuenow="{{loan_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{loan_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <h5 class="font-weight-bold">Other Expenses</h5>
+            <form method="post">
+                {% csrf_token %}
+                <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                        <td class="small text-gray" align="right" rowspan="2">
+                            <a href="{% url 'other_expenses' expenses_list.pk  %}"><img style="max-width:70%; height:70%;"
+                                   src="{% static 'EzFinance_Account/images/add_circle.png' %}"/></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.other_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.other_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.other_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="padding-top:13px">
+                            <div class="progress1 " style="vertical-align:baseline;">
+                                <div class="progress-bar1 bg-info" role="progressbar" style="width: {{other_used|floatformat:2}}%;"
+                                     aria-valuenow="{{other_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{other_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock content %}

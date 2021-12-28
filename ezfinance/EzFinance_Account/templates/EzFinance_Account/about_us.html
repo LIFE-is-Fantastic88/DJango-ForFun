@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>ezfinance-About Us</title>
+    <style>
+    .image-aboutus-banner {
+    background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("https://wallpaperaccess.com/full/732220.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    padding-top: 170px;
+    padding-bottom:170px;
+ }
+ .image-aboutus-para {
+    color:#fff;
+}
+.paddingTB60 {
+    padding-top:40px;
+    padding-bottom:40px;
+}
+ .cta-padding35 {
+    padding: 35px 0 35px;
+     background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+    color:#fff;
+}
+.btnContactSubmit
+{
+    width: 70%;
+    border-radius: 1rem;
+    padding: 2%;
+    color: #fff;
+    background-color: #0062cc;
+    border: none;
+    cursor: pointer;
+}
+/* Footer */
+.footer {
+    position: relative;
+    background-color: #fff;
+    color: #707070;
+    padding: 55px 0 40px;
+}
+.footer h5 {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Open Sans', sans-serif;
+    color: #707070;
+    position: relative;
+    padding-bottom: 16px;
+}
+.footer h5:after {
+    content: '';
+    display: block;
+    margin: 5px 0 0;
+    width: 40%;
+    height: 1px;
+    background-color: #fff;
+}
+.footer ul {
+    list-style: none;
+    line-height: 2.2em;
+    padding-left:0px;
+}
+.footer ul a {
+    color:#707070;;
+}
+.footer ul a:hover {
+    color:#274abb;;
+    text-decoration:none;
+}
+/*footer bottom */
+.footer-bottom {
+    padding-top: 5px;
+    padding-bottom: 15px;
+    border-top: 1px solid rgba(0,0,0,0.09);
+    background: #fff;
+
+}
+.copyright-text p {
+    color: #707070;
+    margin-top: 18px;
+    margin-bottom: 0;
+    font-size:12px;
+}
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'landing_page' %}">EzFinance</a>
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'about_us' %}">About Us<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'contact_us' %}">Support<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav  my-2 my-lg-0">
+            <li class="nav-item active ">
+                <a class="nav-link" href="{% url 'register' %}">Login / Register<span
+                        class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="image-aboutus-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="lg-text">About Us</h1>
+                <p class="image-aboutus-para">EzFinance provide the best financial platform to help everyone especially
+                    student to manage their finance.
+                    <br><br>“It’s not how much money you make, but how much money you keep, how hard it works for
+                    you,<br> and how many generations you keep it for.” – Robert Kiyosaki</p>
+            </div>
+        </div>
+    </div>
+</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'landing_page' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">About Us</li>
+    </ol>
+</nav>
+<div class="paddingTB60">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="strong">Who we are and<br>what we do</h1>
+                <p class="lead">This is the Final Year Project for<br>financial management </p>
+            </div>
+            <div class="col-md-6">
+                <p>Basically, EzFinance is a secure financial system that can be used by consumers especially students
+                    to
+                    create financial management and spending plans with the function of
+                    analyzing monthly spending and generating stable income through fixed deposit functionality.</p>
+                <p>EzFinance uses the X-Frame-Option function in Django to solve Clickjacking problems.
+                    The X-Frame-Option HTTP response header indicates whether the browser allows or does not display the
+                    page in a frame. Therefore, it also uses
+                    the Django-SHA256 function in Django to resolve password storage security issues and
+                    CSRF Token function in Django to resolve Cross Site Request Forgery</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container team-sektion " style="padding-bottom:60px;">
+    <div class="row">
+        <div class="site-heading text-center col-md-12">
+            <h3>Our Team</h3>
+            <p>Our team are built up by Sam P'ng Chun Sein which is student from FTSM UKM <br> and
+            his supervisor Assoc. Prof Dr. Ravie Chandren Muniyandi which is Head of Doctoral Programme FTSM</p>
+            <div class="border"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row col-md-12 justify-content-center">
+
+    <div class="card col-md-3" style="margin-bottom:50px">
+        <img src="https://images.pexels.com/photos/567459/pexels-photo-567459.jpeg?w=940&h=650&auto=compress&cs=tinysrgb"
+             class="card-img-top" alt="..." style="padding-top:4%">
+        <div class="card-body">
+            <h5 class="card-title">Sam P'ng Chun Sein</h5>
+            <p class="card-text">Third year student in FTSM UKM who worked with his FYP namely "Develop a secure
+              financial system namely EzFinance by using Django."</p>
+
+            <a href="https://www.facebook.com/"><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a>
+            <a href="https://twitter.com/"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
+            <a href="https://plus.google.com/"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a>
+            <a href="mailto:sampngchunsein@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
+
+        </div>
+    </div>
+
+    <div class="card col-md-3" style=" margin-left:3%; margin-right:3%;margin-bottom:50px">
+        <img src="https://thebowdoinharpoondotcom.files.wordpress.com/2016/12/00-professor2.jpg"
+             class="card-img-top" alt="..." style="padding-top:4%">
+        <div class="card-body">
+            <h5 class="card-title">Assoc. Prof Dr. Ravie Chandren Muniyandi</h5>
+            <p class="card-text">Associate Professor at Faculty of Information Science and Technology,
+              and Research Center for Software Technology and Management, Universiti Kebangsaan Malaysia.</p>
+
+            <a href="https://www.facebook.com/"><i class="fa fa-facebook-square fa-3x social"></i></a>
+            <a href="https://twitter.com/"><i class="fa fa-twitter-square fa-3x social"></i></a>
+            <a href="https://plus.google.com/"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+            <a href="mailto:raviechandren@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+        </div>
+    </div>
+    <div class="card col-md-3" style="margin-bottom:50px">
+        <img src="https://lh3.googleusercontent.com/proxy/2c-HEWu4V4kS11oZn2mb7xp28oxN26IZ5SehrtdrtEj16NVaZKA8JrjeHqDSTom3ulZjtlsdcljeecgF5IShCuKSMbRqFR7S713G7cdWc2DJZbIubx_lFBNfzEVB8Lz5yksmd-SJQ9hiHwMFYbCzCQK56lY0QU9y7Db5zl9OTNq249Nrigw9aiOFv69kjkZvWsyIvb9i"
+             class="card-img-top" alt="..." style="padding-top:4%">
+        <div class="card-body">
+            <h5 class="card-title">Prof Dr. Lam Meng Chun</h5>
+            <p class="card-text">Senior Lecturer at Centre for Artificial Intelligence and Technology,
+              Faculty of Information Science and Technology, Universiti Kebangsaan Malaysia.</p>
+
+            <a href="https://www.facebook.com/"><i class="fa fa-facebook-square fa-3x social"></i></a>
+            <a href="https://twitter.com/"><i class="fa fa-twitter-square fa-3x social"></i></a>
+            <a href="https://plus.google.com/"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+            <a href="mailto:lmc@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+        </div>
+    </div>
+</div>
+<div class="cta-sektion cta-padding35">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                <h3><span class="glyphicon glyphicon-cog "></span> <b>Financial management problem?</b> Explore
+                    EzFinance like a pro.</h3>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12 ">
+                <a href="{% url 'register' %}" class="btnContactSubmit">Start Right Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer-section">
+    <div class="footer">
+        <div class="container col-md-12 row justify-content-center">
+            <div class="col-md-4 footer-one">
+                <h5>About Us </h5>
+                <p>EzFinance is a secure financial system that can be used by consumers especially students
+                    to
+                    create financial management and spending plans with the function of
+                    analyzing monthly spending and generating stable income through fixed deposit functionality</p>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/"><i class="fa fa-facebook-square fa-3x social"></i></a>
+                    <a href="https://twitter.com/"><i class="fa fa-twitter-square fa-3x social"></i></a>
+                    <a href="https://plus.google.com/"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+                    <a href="mailto:EzFinance_customerservice@gmail.com"><i class="fa fa-envelope-square fa-3x social"></i></a>
+                </div>
+            </div>
+            <div class="col-md-3 footer-two">
+                <h5>Information </h5>
+                <ul>
+                    <li><a href="#">Maintenance Tips</a></li>
+                    <li><a href="#">Locations</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partners</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 footer-three">
+                <h5>Contact Us </h5>
+                <ul>
+                    <li>Tel: +603-8921 6179</li>
+                    <li>Tel: +603-8921 5555</li>
+                    <li>Fax: +603-8921 4097</li>
+
+                </ul>
+            </div>
+            <div class="col-md-2 footer-four">
+                <h5>Address</h5>
+                <p>
+                  Faculty of Information Science and Technology (Fakulti Teknologi dan Sains Maklumat) 43600 Bangi, Selangor
+                </p><br>
+              <p>
+
+              </p>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center ">
+                    <div class="copyright-text">
+                        <p>CopyRight © 2020 Sam All Rights Reserved</p>
+                    </div>
+                </div> <!-- End Col -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

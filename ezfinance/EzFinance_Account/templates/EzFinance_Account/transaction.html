@@ -1,0 +1,218 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style type="text/css">
+    .container {
+    position: static;
+     margin-top: 50px;
+    }
+    #extra_row,#first_row,#second_row,#third_row,#sixth_row {
+    margin-top: 20px;
+    }
+    #second_row{
+    margin-top: 30px;
+    }
+#payment_button {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    }
+#transfer_button{
+margin-top: 15px;
+    margin-bottom: 30px;
+
+}
+
+
+</style>
+{% load staticfiles %}
+<div class="container emp-profile">
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="profile-head">
+
+                <p class="proile-rating">Your current account balance is &nbsp; <span><font
+                        size="5px">RM {{ user.account.account_balance|floatformat:2 }}</font></span></p>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                           aria-controls="home" aria-selected="true">Deposit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                           aria-controls="profile" aria-selected="false">Transfer</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tab-content profile-tab" id="myTabContent">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p><img src="{% static 'EzFinance_Account/images/visa.png' %}">
+                                    <img src="{% static 'EzFinance_Account/images/mastercard.png' %}">
+
+                                    <img src="{% static 'EzFinance_Account/images/jcb.png' %}">
+                                    <img src="{% static 'EzFinance_Account/images/maestro.png' %}">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <label>Card number </label>
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                {{ deposit.creditcard_num|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <label>Full name (on the card)</label>
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                {{ deposit.creditcard_name|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <label>Expiration</label>
+                            </div>
+
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-2">
+                                {{ deposit.credit_MM|as_crispy_field }}
+                            </div>
+                            &nbsp;/&nbsp;
+                            <div class="col-md-2">
+                                {{ deposit.credit_YY|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-2">
+                                <label data-toggle="tooltip" title="3 digits code on back side of the card"
+                                >CVV <i class="fa fa-question-circle"></i></label>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Amount (in RM)</label>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-2">
+                                {{ deposit.credit_CVV|as_crispy_field }}
+                            </div>
+                            <div class="col-md-3">
+                                {{ deposit.deposit_amount|as_crispy_field }}
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button id="payment_button" name="deposit_confirm"
+                                        class="subscribe btn btn-primary btn-block" type="submit">
+                                    Confirm
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row form-group" >
+                            <div class="col-md-4">
+                                <label>From</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="transfer_from" readonly style="width:50%"
+                                       value='BASIC EZFINANCE ACCOUNT {{ user.id|add:"+6067071528"}}'>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" id="second_row">
+                            <div class="col-md-4">
+                                <label data-toggle="tooltip" title="Recipient's account number">To <i
+                                        class="fa fa-question-circle"></i></label>
+                            </div>
+                            <div class="col-md-4">
+                               {{ transfer.transfer_to|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row form-group" id="first_row">
+                            <div class="col-md-4 ">
+                                <label>Fund Transfer Category</label>
+                            </div>
+                            <div class=" col-md-4">
+                                 {{ transfer.transfer_category|as_crispy_field }}
+                            </div>
+
+                        </div>
+                        <div class="row form-group" id="extra_row">
+                            <div class="col-md-4 ">
+                                <label>Bank Name</label>
+                            </div>
+                            <div class="col-md-4" >
+                                 {{ transfer.transfer_bank|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+                        <div class="row form-group " id="forth_row">
+                            <div class="col-md-4">
+                                <label>Amount (in RM)</label>
+                            </div>
+                            <div class="col-md-4 ">
+                                 {{ transfer.transfer_amount|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row form-group " id="sixth_row">
+                            <div class="col-md-4">
+                                <label>Transaction Instruction </label>
+                            </div>
+                            <div class="col-md-4">
+                                 {{ transfer.transfer_instruction|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" id="transfer_button"
+                                 style=" width: 50%; margin-top: 10px; margin-left : 74%">
+                                <button name="transfer_confirm" class="subscribe btn btn-primary btn-block" type="submit">
+                                    Confirm
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,148 @@
+{% extends "EzFinance_Account/base.html"%}
+{% block content %}
+<style>
+
+ .blinking2{
+    animation:blinking2Text 1s infinite;
+}
+@keyframes blinking2Text{
+    0%{     color: orangered;    }
+    49%{    color: orangered; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: orangered;    }
+}
+.underline_hover:hover{
+text-decoration: underline !important;
+}
+.hand-movement{
+    position: relative;
+    animation: hand-movement-text 1s infinite !important;
+    animation-direction: alternate;
+}
+@keyframes hand-movement-text {
+  0%   {left: 0px; }
+  25%  {left: 20px; }
+  50%  {left: 0px; }
+  75%  {left: 20px; }
+  100% {left: 0px;}
+}
+.btn-hover:hover{
+ background-color: darkgray !important;
+ color:white !important;
+}
+
+</style>
+<div class="container emp-profile">
+    <div class="row col-md-14">
+        <div class="col-md-6"><h3>Job ID&nbsp;&nbsp;<font color="dodgerblue">#J{{ job_vacancy_list_detail_selected.id|add:"+886457" }}</font></h3></div>
+        <div class="col-md-6" align="right"><h3>Applicant &nbsp; <font color="limegreen">{{ applied_list_count }}</font></h3></div>
+    </div>
+    <hr>
+    {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+    <div class="col-md-14" >
+        {% if applied_list %}
+        {% for applied_lists in users_applied_list %}
+        <div class="bg-white rounded-lg shadow col-md-12" style="margin-top:1%">
+            <div class="p-4">
+               <div class="row">
+                   <div class="col-md-2"><strong>Applicant Name</strong></div>
+                   <div class="col-md-6"><font style="text-transform: uppercase;" color="mediumblue">{{applied_lists.job_applicant_name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;<strong style="color:#001a00">APPLY ID</strong>&nbsp; #AP{{ applied_lists.id|add:"+22140" }}</font></div>
+                   <div  class="col-md-4"  align="right" ><span class="fa fa-clock-o mr-3 " style="color:silver"></span><font size="2.8%" color="lightslategray	">Apply on {{ applied_lists.job_apply_date|date:'d M Y' }}</font></div>
+               </div>
+                <div class="row" style="margin-top:2%">
+                    <div class="col-md-2"><strong>Email</strong></div>
+                    <div class="col-md-4"><font  color="mediumblue">{{applied_lists.job_applicant_email}}</font>&nbsp;&nbsp;<a href="mailto:{{ applied_lists.job_applicant_email }}"><span  class="fa fa-envelope " style="color:dodgerblue"></span></a></div>
+                    <div class="col-md-2" align="center"><strong>Phone</strong></div>
+                    <div class="col-md-4"><font  color="mediumblue">{{applied_lists.job_applicant_contact_number}}</font>&nbsp;&nbsp;<a href="tel:{{applied_lists.job_applicant_contact_number}}"><span  class="fa fa-phone mr-3 " style="color:dodgerblue"></span></a></div>
+                </div>
+                <div class="row" style="margin-top:2%">
+                    <div class="col-md-2"><strong>Apply Status</strong></div>
+                    <div class="col-md-10">
+                    {% if applied_lists.job_mark_as_read == False and applied_lists.job_reject == False %}
+                    <font color="orangered" class="blinking2">In queue</font>
+                    {% elif applied_lists.job_mark_as_read == True and applied_lists.job_reject == False %}
+                    <span class="fa fa-check-circle mr-3 fa-lg" style="color:limegreen"></span><label
+                        style="border: none ;border-radius: 25px; width:auto; padding-left:2%; padding-right:2%;  background-color:#f2ffe6; text-align:center;"><font
+                        class="small text-gray" style="font-weight: lighter;">Employer is actively processing
+                    applicants</font></label>
+                    {% elif applied_lists.job_mark_as_read == True and applied_lists.job_reject == True or applied_lists.job_mark_as_read == False and applied_lists.job_reject == True %}
+                        <span class="fa fa-times-circle mr-3 fa-lg" style="color:#ff0000"></span><label
+                        style="border: none ;border-radius: 25px; width:auto; padding-left:2%; padding-right:2%;  background-color:#ffe6e6; text-align:center;"><font
+                        class="small text-gray" style="font-weight: lighter;">Employer has rejected your
+                    application</font></label>
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="row" style="margin-top:2%">
+                    <div class="col-md-2"><strong>Pitches</strong></div>
+                    <div class="col-md-10"><textarea rows="2" readonly style="padding:0.5%; color:mediumblue; width:100%; height:100%; border-radius:5px">{{applied_lists.job_pitch}}</textarea></div>
+                </div>
+                <div class="row" style="margin-top:2%">
+                    <div class="col-md-2"><strong>Applicant Resume</strong></div>
+                    <div class="col-md-10"><a href="{{ applied_lists.applicant_resume.url }}" target="_blank" class="underline_hover" style="color:mediumblue;">Click here to download {{applied_lists.job_applicant_name}}'s resume</a>&nbsp;&nbsp;<span  class="fa fa-hand-o-left hand-movement" style="color:dodgerblue"></span></div>
+                </div>
+                <div class="row" style="margin-top:2%">
+                    <div class="col-md-12" align="right">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ applied_lists.pk }}" name="applied_list_pk">
+                        <input type="hidden" value="{{ applied_lists.job_applicant_name }}" name="applied_list_name">
+                    <button type="submit" class="btn btn-secondary btn-hover" name="vacancy_accept" onclick="return confirm('Are you you sure to accept #AP{{ applied_lists.id|add:'+22140' }} application')"  style="border-radius:25px; background-color:linen; color:darkgray;
+            border:none;padding-left:5%;padding-right:5%;padding-top:0.5%;padding-bottom:0.5%;font-size: 20px;">Accept</button>
+                        &nbsp;
+                        <button type="submit" class="btn btn-secondary btn-hover" name="vacancy_reject" onclick="return confirm('Are you you sure to reject #AP{{ applied_lists.id|add:'+22140' }} application')"  style="border-radius:25px; background-color:linen; color:darkgray;
+            border:none;padding-left:5%;padding-right:5%;padding-top:0.5%;padding-bottom:0.5%;font-size: 20px;">Reject</button>
+
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="row">
+            <div class="col-md-12" align="center" data-toggle="tooltip" title="No applicant react on this vacancy">
+                <img src="https://i.pinimg.com/originals/43/3b/6c/433b6c5336c72a21bcfd9db8d831562a.gif" height="85%">
+            </div>
+
+        </div>
+        {% endif %}
+        {% if users_applied_list.has_other_pages %}
+        <div style="margin-top:2%">
+            <ul class="pagination">
+                {% if users_applied_list.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ users_applied_list.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Previous</span></li>
+                {% endif %}
+                {% for i in users_applied_list.paginator.page_range %}
+                {% if users_applied_list.number == i %}
+                <li class=" page-item"><span class="page-link">{{ i }} <span
+                        class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if users_applied_list.has_next %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ users_applied_list.next_page_number }}">Next</a></li>
+                {% else %}
+                <li class="disabled page-item"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock content %}

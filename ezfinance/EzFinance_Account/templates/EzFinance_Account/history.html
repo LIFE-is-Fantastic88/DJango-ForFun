@@ -1,0 +1,164 @@
+{% extends "EzFinance_Account/base.html"%}
+{% block content %}
+<style type="text/css">
+.container {
+    position: static;
+     margin-top: 50px;
+    }
+   #filter_form {
+        width: 50%;
+        margin-top: 10px;
+        margin-left : 74%
+    }
+.fabutton {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+
+
+
+</style>
+<div class="container emp-profile">
+
+
+    <div class="row">
+
+        {# icon and search-box #}
+        <div class="col-md-12" style="margin-bottom:20px;margin-top:10px;text-align:right">
+            <form method="get" action="{% url 'EzFinance-transaction-history' %}">
+                <button type="submit" id="completed-task" class="fabutton">
+                    <i class="fa fa-search"></i>&nbsp;
+                </button>
+
+                <input name="q" type="text" placeholder="Search" aria-label="Search">
+            </form>
+        </div>
+
+        {# artist-list section #}
+
+    </div>
+
+    <div class="row" id="replaceable-content">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>
+                    <center>Transaction<br>Date & Time</center>
+                </th>
+                <th>
+                    <center>Reference no</center>
+                </th>
+                <th>
+                    <center>Transaction Details</center>
+                </th>
+                <th>
+                    <center>Debit</center>
+                </th>
+                <th>
+                    <center>Credit</center>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if history_list %}
+            {% for history in users %}
+            <tr>
+                <td>
+                    <center>{{ history.transaction_date|date:'d M Y H:i:s' }}</center>
+                </td>
+                <td>
+                    <center>#EZF{{ history.id|add:"+8854126937225" }}</center>
+                </td>
+                <td>
+                    <center>{{ history.transaction_detail }}</center>
+                </td>
+                <td>
+                    <center>
+                        {% if history.transaction_debit != 0 %}
+                        <font size="1px">MYR</font>{{ history.transaction_debit|floatformat:2 }}
+                        {% endif %}
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        {% if history.transaction_credit != 0 %}
+                        <font size="1px">MYR</font>{{ history.transaction_credit|floatformat:2 }}
+                        {% endif %}
+                    </center>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="5" align="center">
+                    No Record Show
+                </td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+
+        {% if users.has_other_pages %}
+        <ul class="pagination">
+            {% if users.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Previous</span></li>
+            {% endif %}
+            {% for i in users.paginator.page_range %}
+            {% if users.number == i %}
+            <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}">Next</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Next</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h3>Current account transaction history policy</h3><br>
+            <span class="small text-gray">If you choose to leave us we won't pressure you to stay, but we would be sad to see you go...</span>
+            <hr>
+            <div class="h6"><strong>Providing payment transaction history at account closure</strong></div>
+            <p>
+                Once we have closed your account, we will provide one copy of your payment transaction history (free of
+                charge) covering a period of the last 5 years. We are not required to provide transaction history
+                relating to any payment transaction that occurred 5 or more years prior to the date of account closure.
+
+                If we hold a valid email address for you, the transaction history will be emailed to you within 10
+                working days after the account closure in most circumstances. If you would like to opt out of this
+                service or request a transaction history for a period less than 5 years, please contact us.
+
+                If we do not hold a valid email address on record, we will ask you to provide this or an alternative way
+                of how we can provide this information to you.
+            </p>
+            <br>
+            <div class="h6"><strong>Providing payment transaction history up to 5 years after account closure</strong>
+            </div>
+            <p>
+                You may request a payment transaction history if you have closed your account within the previous 5
+                years. However, we are not required to provide a payment transaction history in relation to any
+                transaction that occurred 5 or more years prior to the date of your request. For example, if you
+                requested your payment transaction history 3 years after account closure, you would only be entitled to
+                the last 2 years of payment transaction information.
+
+                If you no longer hold an account with us, we may firstly ask you to send us identification
+                documentation. Once this is received, we will issue your payment transaction history within 7 working
+                days in most circumstances.
+            </p>
+        </div>
+
+
+    </div>
+</div>
+
+</div>
+{% endblock content %}

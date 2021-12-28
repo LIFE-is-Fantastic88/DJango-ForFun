@@ -1,0 +1,109 @@
+{% extends "EzFinance_Account/admin_base.html"%}
+{% block content %}
+<style>
+    #filter_form {
+        width: 50%;
+        margin-top: 10px;
+        margin-left : 74%
+    }
+.fabutton {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+.blinking{
+    animation:blinkingText 1.3s infinite;
+}
+@keyframes blinkingText{
+    0%{     color: orangered;    }
+    49%{    color: orangered; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: orangered;    }
+}
+
+</style>
+<div class="container emp-profile">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h2>
+                    Customer Service
+                </h2>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+ {% if messages %}
+                                    {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} ">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <div class="col-md-12 row">
+                <div class="col-md-10">
+                    <h4>
+                        Case ID: #{{ current_case.id|add:"+1140" }}
+                    </h4>
+                </div>
+            </div>
+            <hr>
+            <div class="col-md-12 row" style="margin-top:2%">
+                <div class="col-md-2"><STRONG>Customer Name</STRONG></div>
+                <div class="col-md-2">{{ current_case.name }}</div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2"><STRONG>Created Date</STRONG></div>
+                <div class="col-md-5">{{ current_case.date }}</div>
+            </div>
+            <div class="col-md-12 row" style="margin-top:2%">
+                <div class="col-md-2"><STRONG>Customer Phone</STRONG></div>
+                <div class="col-md-2">{{ current_case.phone }}&nbsp;&nbsp;<a href="tel:{{ current_case.phone }}"><span
+                        class="fa fa-phone mr-3"></span></a></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2"><STRONG>Customer Email</STRONG></div>
+                <div class="col-md-5">{{ current_case.email }}&nbsp;&nbsp;<a
+                        href="mailto:{{ current_case.email }}?subject=EzFinance Customer Service - Case ID: #{{ current_case.id|add:'+1140' }}"><span
+                        class="fa fa-envelope mr-3"></span></a></div>
+            </div>
+             <div class="col-md-12 row" style="margin-top:2%">
+                <div class="col-md-2"><STRONG>Issue Status</STRONG></div>
+                <div class="col-md-2">
+                     {% if current_case.check == False %}
+                    <font color="orangered" class="blinking">Pending</font>
+                    {% else %}
+                    <font color="#413EC5">Complete</font>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-12 row" style="margin-top:2%">
+                <div class="col-md-2"><STRONG>Case Issue</STRONG></div>
+
+            </div>
+            <div class="col-md-12 row" style="margin-top:1%">
+                <div class="col-md-12">
+                    <textarea rows="5" style="height:100%; width:100%" readonly>{{ current_case.message }}</textarea>
+                </div>
+            </div>
+            <div class="col-md-12 row" style="margin-top:1%">
+
+                <div class="col-md-12" align="right">
+                    <form method="post" >
+                        {% csrf_token %}
+                        {% if current_case.check == False %}
+                        <button type="submit" class="btn btn-primary" name="issue_solved">ISSUE SOLVE</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-primary" name="issue_activate">REACTIVATE</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

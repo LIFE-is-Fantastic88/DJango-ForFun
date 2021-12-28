@@ -1,0 +1,120 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+.container {
+    position: static;
+     margin-top: 50px;
+    }
+#first_row,#second_row,#third_row,#forth_row,#transfer_button {
+    margin-top: 20px;
+    }
+body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+
+</style>
+<div class="container emp-profile">
+    <div class="col-md-6">
+            <div class="profile-head">
+                <h3>
+                    Entertainment Expenses
+                </h3>
+                <p class="proile-rating">{{ expenses_list.startdate }}&nbsp-&nbsp{{ expenses_list.enddate }}</p>
+            </div>
+        </div>
+    <hr>
+      {% if messages %}
+                                    {% for message in messages %}
+                                    <div class="alert alert-danger ">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+     <div class="col-md-14 " style="margin-top:15px">
+        <div class="bg-white rounded-lg p-5 shadow">
+             <table class="col-md-12 ">
+                    <tr>
+                        <td class="small text-gray" colspan="1">Budget Spent</td>
+                        <td class="small text-gray" colspan="1">Budget Planned</td>
+                        <td class="small text-gray" colspan="1">Remaining</td>
+                    </tr>
+                    <tr>
+                        <td style="color: orangered">${{ expenses_list.entertainment_budget_spent|floatformat:2 }}</td>
+                        <td>${{ expenses_list.entertainment_budget_planned|floatformat:2 }}</td>
+                        <td>${{ expenses_list.entertainment_budget_remaining|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="padding-top:13px">
+                            <div class="progress " style="vertical-align:baseline;">
+                                <div class="progress-bar bg-info" role="progressbar" style=" width: {{entertainment_used|floatformat:2}}%;"
+                                     aria-valuenow="{{entertainment_used|floatformat:2}}"
+                                     aria-valuemin="0" aria-valuemax="100">{{entertainment_used|floatformat:2}}% used
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+     </div>
+    <div class="col-md-14 " style="margin-top:15px">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <form method="post">
+        {% csrf_token %}
+        {{EntertainmentExpensesRecord_form|crispy}}
+        <button type="submit" name="dl_expenses_submit" class="btn btn-secondary" style="margin-left: 92.5% ">Submit</button>
+    </form>
+        </div>
+    </div>
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h4>What is Entertainment Expenses</h4>
+            <hr>
+            <div class="h6">Type 1: Qualified entertainment expenses</div>
+            <ul>
+                <li>Theaters</li>
+                <li>Social, athletic, and sporting clubs</li>
+                <li>Sporting events</li>
+                <li>Hunting, fishing, vacation and similar types of trips</li>
+                <li>Cost of meals during entertainment</li>
+                <li>Electronic games</li>
+            </ul><br>
+             <h4>3 Ways to Reduce Entertainment Expenses</h4>
+            <hr>
+            <div class="h6">Method 1: Budgeting At-Home Entertainment Expenses</div>
+            <ul>
+                <li>Purchase a cable alternative</li>
+                <li>Listen to music via streaming services</li>
+                <li>Acquire a library card</li>
+                <li>Rent video games instead of buying them</li>
+                <li>Split entertainment memberships with your loved ones</li>
+            </ul>
+            <div class="h6">Method 2: Accessing Local Low-Budget Entertainment</div>
+            <ul>
+                <li>Check out student, senior, or other discounts</li>
+                <li>Choose matinees over evening movies</li>
+                <li>Watch for free community events</li>
+                <li>Watch for discount days or happy hours</li>
+                <li>Buy season passes to your favorite places</li>
+                <li>Volunteer at special events</li>
+            </ul>
+            <div class="h6">Method 3: Spending Less on Vacation Entertainment</div>
+            <ul>
+                <li>Travel during your destination's off-season</li>
+                <li>Buy event or plane tickets several months in advance</li>
+                <li>Purchase group deals online</li>
+                <li>Pack plenty of water and snacks</li>
+                <li>Spend time vacationing outdoors</li>
+
+            </ul>
+
+
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}

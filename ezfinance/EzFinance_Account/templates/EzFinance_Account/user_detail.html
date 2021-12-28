@@ -1,0 +1,284 @@
+{% extends "EzFinance_Account/admin_base.html"%}
+{% block content %}
+<style>
+    #filter_form {
+        width: 50%;
+        margin-top: 10px;
+        margin-left : 74%
+    }
+.fabutton {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+
+</style>
+
+<div class="container emp-profile">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="profile-head">
+                <h2>
+                    Administration Site
+                </h2>
+            </div>
+        </div>
+        <div class="col-md-6" align="right">
+            {% if user_detail_list.is_active %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="active_lock" class="btn btn-secondary"><span class="fa fa-lock mr-3"></span>&nbsp;LOCK</button>
+            </form>
+            {% else %}
+            <form method="post">
+                {% csrf_token %}
+            <button type="submit" name="active_unlock" class="btn btn-secondary"><span class="fa fa-unlock mr-3"></span>&nbsp;UNLOCK</button>
+             </form>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h4>
+                EzFinance User Profile
+            </h4>
+            <hr>
+            <table class="col-md-12" cellpadding="10">
+                <tr>
+                    <td align="left"><strong>Account no.</strong></td>
+                    <td align="left"><font color="#413EC5">{{ user_detail_list.id|add:"+6067071528" }}</font></td>
+                    <td></td>
+                    <td rowspan="9" align="center"><img src="{{ user_detail_list.account.image.url }}" height="250"
+                                                        width="250" class="img-thumbnail"></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>Name</strong></td>
+                    <td align="left"><font color="#413EC5">{{ user_detail_list.first_name }}&nbsp{{user_detail_list.last_name }}</font></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>MyKad/Passport</strong></td>
+                    <td align="left"><font color="#413EC5">{{ user_detail_list.account.mykad }}</font></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>Account Balance</strong></td>
+                    <td align="left"><font color="#413EC5">RM&nbsp{{ user_detail_list.account.account_balance|floatformat:2 }}</font></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>Email</strong></td>
+                    <td align="left"><font color="#413EC5">{{ user_detail_list.email }}</font></td>
+                    <td><a href="mailto:{{ user_detail_list.email }}?subject=EzFinance Customer Service - Staff ID: STA{{ account_num }}"><span class="fa fa-envelope mr-3"></span></a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>Phone</strong></td>
+                    <td align="left"><font color="#413EC5">{{ user_detail_list.account.phone }}</font></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>Account Status</strong></td>
+                    <td align="left">
+                        {% if user_detail_list.is_active %}
+                        <font color="#413EC5">
+                            active
+                        </font>
+                        <td></td>
+                        {% else %}
+                        <font color="orangered">
+                            inactive
+                        </font>
+                    <td><span class="fa fa-lock mr-3"></span></td>
+                        {% endif %}
+                    </td>
+
+                    <td></td>
+                </tr>
+                 <tr>
+                    <td align="left"><strong>Date Created</strong></td>
+                    <td align="left"><font color="#413EC5">{{ user_detail_list.date_joined }}</font></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>Last Login</strong></td>
+                    <td align="left"><font color="#413EC5">{{ user_detail_list.last_login }}</font></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+
+
+        </div>
+    </div>
+     <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+
+            <h4>
+                Fixed Deposit Account
+            </h4>
+
+            <hr>
+            <table class="table table-hover">
+                <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col" >Account no.</th>
+                    <th scope="col">Maturity date</th>
+                    <th scope="col">Interest rate</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody  align="center">
+                {% if fixedDepositObject %}
+                {% for FixedDepositlist in fixedDepositObject %}
+                <tr>
+                    <th scope="row">{{ FixedDepositlist.id|add:"+4045219663" }}</th>
+                    <td>{{ FixedDepositlist.maturity_date|date:'d M Y' }}</td>
+                    <td>{{ FixedDepositlist.interest_rate|floatformat:2 }}% p.a.</td>
+                    <td>MYR {{ FixedDepositlist.fixedDeposit_amount|floatformat:2 }}</td>
+                    <td>
+                        <form action="{% url 'fixedDeposit_refund' FixedDepositlist.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-secondary" onclick="return confirm('Please double confirm account number {{ FixedDepositlist.id|add:'+4045219663' }} correct before refund.')" value="REFUND">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+        <tr>
+            <td colspan="5" align="center">
+                No Account Show
+            </td>
+        </tr>
+        {% endif %}
+  </tbody>
+</table>
+        </div>
+    </div>
+
+    <div class="col-md-14" style="margin-top:3%">
+        <div class="bg-white rounded-lg p-5 shadow">
+            <h4>
+                Transaction
+            </h4>
+            <hr>
+<div class="row">
+
+        {# icon and search-box #}
+        <div class="col-md-12" style="margin-bottom:20px;margin-top:10px;text-align:right">
+            <form method="get" action="{% url 'user_detail' user_detail_list.pk  %}">
+                <button type="submit" id="completed-task" class="fabutton">
+                    <i class="fa fa-search"></i>&nbsp;
+                </button>
+
+                <input name="q" type="text" placeholder="Search" aria-label="Search">
+            </form>
+        </div>
+
+        {# artist-list section #}
+
+    </div>
+
+    <div class="row" id="replaceable-content">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>
+                    <center>Transaction<br>Date & Time</center>
+                </th>
+                <th>
+                    <center>Reference no</center>
+                </th>
+                <th>
+                    <center>Transaction Details</center>
+                </th>
+                <th>
+                    <center>Debit</center>
+                </th>
+                <th>
+                    <center>Credit</center>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if history_list %}
+            {% for history in users %}
+            <tr>
+                <td>
+                    <center>{{ history.transaction_date|date:'d M Y H:i:s' }}</center>
+                </td>
+                <td>
+                    <center>#EZF{{ history.id|add:"+8854126937225" }}</center>
+                </td>
+                <td>
+                    <center>{{ history.transaction_detail }}</center>
+                </td>
+                <td>
+                    <center>
+                        {% if history.transaction_debit != 0 %}
+                        <font size="1px">MYR</font>{{ history.transaction_debit|floatformat:2 }}
+                        {% endif %}
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        {% if history.transaction_credit != 0 %}
+                        <font size="1px">MYR</font>{{ history.transaction_credit|floatformat:2 }}
+                        {% endif %}
+                    </center>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="5" align="center">
+                    No Record Show
+                </td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+
+        {% if users.has_other_pages %}
+        <ul class="pagination">
+            {% if users.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Previous</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Previous</span></li>
+            {% endif %}
+            {% for i in users.paginator.page_range %}
+            {% if users.number == i %}
+            <li class=" page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+            <li class=" page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}">Next</a></li>
+            {% else %}
+            <li class="disabled page-item"><span class="page-link">Next</span></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+        </div>
+            </div>
+    </div>
+
+</div>
+{% endblock content %}

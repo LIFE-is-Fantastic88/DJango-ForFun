@@ -1,0 +1,103 @@
+{% extends "EzFinance_Account/admin_base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+    .container {
+    position: static;
+     margin-top: 50px;
+    }
+#first_row,#second_row {
+    margin-top: 20px;
+    }
+
+</style>
+<div class="container emp-profile">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+
+            <div class="col-md-10">
+                <div class="profile-head">
+                    <h4>
+                        Good Day,&nbsp {{ user.first_name }}&nbsp{{ user.last_name }}
+                    </h4>
+
+                    <p class="proile-rating">Last Update on <span> {{ user.account.updated_at|date:'d M Y H:i:s' }}</span></p>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                               aria-controls="home" aria-selected="true">Staff Profile</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="profile-edit-btn" name="UpdateProfile">Update Profile</button>
+
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-10">
+                <div class="tab-content profile-tab" id="myTabContent" >
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <fieldset class="form-group">
+                            <div class="row">
+                            <div class="col-md-5 ">
+                                 {{ u_form.first_name|as_crispy_field }}
+                            </div>
+                                <div class="col-md-5 ">
+                                 {{ u_form.last_name|as_crispy_field }}
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-5 ">
+                                 {{ u_form.email|as_crispy_field }}
+
+                            </div>
+                                 <div class="col-md-5 ">
+                                 {{ p_form.mykad|as_crispy_field }}
+                            </div>
+                            </div>
+
+                            <div class="row">
+                            <div class="col-md-5 ">
+                                 {{ p_form.phone|as_crispy_field }}
+                            </div>
+                                <div class="col-md-5 ">
+                                 {{ p_form.profesion|as_crispy_field }}
+                            </div>
+                            </div>
+
+                            <div class="row">
+                            <div class="col-md-10 ">
+                                 {{ p_form.address|as_crispy_field }}
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-4 ">
+                                 {{ p_form.city|as_crispy_field }}
+                            </div>
+                                <div class="col-md-3 ">
+                                 {{ p_form.postcode|as_crispy_field }}
+                            </div>
+                                <div class="col-md-3 ">
+                                 {{ p_form.country|as_crispy_field }}
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-10 ">
+                                 {{ p_form.image|as_crispy_field }}
+                            </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,101 @@
+{% extends "EzFinance_Account/base.html"%}
+{% load crispy_forms_tags %}
+{% block content %}
+<style type="text/css">
+    .container {
+    position: static;
+     margin-top: 50px;
+    }
+#first_row,#second_row {
+    margin-top: 20px;
+    }
+    body {
+  background: #ff7e5f;
+  background: -webkit-linear-gradient(to right, #3931af, #00c6ff);
+  background: linear-gradient(to right, #3931af, #00c6ff);
+  min-height: 100vh;
+}
+
+
+</style>
+<div class="container emp-profile">
+    <h3>Create New Expenses Plan</h3>
+    <hr>
+    {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} ">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ exp_form.startdate|as_crispy_field}}
+            </div>
+            <div class="col-md-6">
+                {{ exp_form.enddate|as_crispy_field}}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-md-6">
+                {{ exp_form.net_disposable_income|as_crispy_field}}
+            </div>
+            <div class="col-md-6">
+                {{ exp_form.budget_plan|as_crispy_field}}
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-md-6">
+                {{ exp_form.dailyliving_budget_planned|as_crispy_field}}
+            </div>
+            <div class="col-md-6">
+                {{ exp_form.education_budget_planned|as_crispy_field}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ exp_form.entertainment_budget_planned|as_crispy_field}}
+            </div>
+            <div class="col-md-6">
+                {{ exp_form.healthcare_budget_planned|as_crispy_field}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ exp_form.rental_budget_planned|as_crispy_field}}
+            </div>
+            <div class="col-md-6">
+                {{ exp_form.transportation_budget_planned|as_crispy_field}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ exp_form.loan_budget_planned|as_crispy_field}}
+            </div>
+            <div class="col-md-6">
+                {{ exp_form.other_budget_planned|as_crispy_field}}
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3" id="transfer_button"
+                 style=" width: 50%; margin-top: 10px; margin-left : 74%">
+                <button name="expenses_manager_create" class="subscribe btn btn-primary btn-block" type="submit">
+                    Create
+                </button>
+            </div>
+        </div>
+    </form>
+    <script>
+  $(function () {
+    $("#datetimepicker1").datetimepicker({
+      format: 'DD/MM/YYYY',
+    });
+  });
+</script>
+</div>
+{% endblock content %}
